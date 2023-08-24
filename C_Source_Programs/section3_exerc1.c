@@ -10,4 +10,6 @@ int main() {
 
     printf("This is your number: %d\n", num);
 
+    return 0;
+
 }

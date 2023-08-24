@@ -10,4 +10,6 @@ int main(){
 
     printf("The number informed is %.2lf\n", number);
 
+    return 0;
+
 }
