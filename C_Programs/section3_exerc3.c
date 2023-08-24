@@ -4,7 +4,7 @@ int main(){
 
     int num, sum = 0;
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 3; i++) {
 
         printf("Enter the %dº value, please:\n", (i+1));
 
