@@ -3,7 +3,7 @@
 
 int main(){
 
-    int *digits = NULL, numDigits;
+    int *digits, numDigits;
     char input[100];
 
     do {
