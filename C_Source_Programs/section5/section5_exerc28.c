@@ -3,7 +3,7 @@
 int main() {
 
     int num, fat;
-    float e = 0;
+    float e = 1;
 
     printf("Enter an integer number greater than 0, please:\n");
     scanf("%d", &num);
