@@ -8,7 +8,6 @@ int main() {
     for(int i = 0; i < sizeof(numbers) / sizeof(numbers[0]); i++) {
         printf("Enter the %dº real value, please: ", (i+1));
         scanf("%f", &numbers[i]);
-        getchar();
     }
 
     printf("\n*** FIRST ARRAY ***\n\n");

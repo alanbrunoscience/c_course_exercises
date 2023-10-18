@@ -7,7 +7,6 @@ int main() {
     for(int i = 0; i < sizeof(numbers) / sizeof(numbers[0]); i++) {
         printf("Enter the %dº value (numbers[%d]), please: ", (i+1), i);
         scanf("%d", &numbers[i]);
-        getchar();
     }
 
     printf("\nEnter the value of X and Y between 0 and 7, please:\n");

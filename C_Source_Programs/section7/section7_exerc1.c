@@ -7,7 +7,6 @@ int main() {
     for(int i = 0; i < sizeof(numbers)/sizeof(numbers[0]); i++){
         printf("Enter the %dº integer number, please: ", (i + 1));
         scanf("%d", &numbers[i]);
-        getchar();
     }
 
     sum = numbers[0] + numbers[1] + numbers[5];
