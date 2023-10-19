@@ -11,7 +11,7 @@ int main(){
 
     for(int i = 0; i < 3; i ++){
         minor = i;
-        for(int j = minor + 1; j <= 3; j++) {
+        for(int j = minor + 1; j < 3; j++) {
             if(vetNum[j] < vetNum[minor]){
                 minor = j;
             }
@@ -21,10 +21,10 @@ int main(){
         vetNum[minor] = temp;
     }
 
-    printf("|");
+    printf("| ");
 
-    for(int k = 0; k < 3; k++) {
-        printf(" %d | ", vetNum[k]);
+    for(int k = 0; k < 5; k++) {
+        printf("%d | ", vetNum[k]);
     }
 
     printf("\n");
