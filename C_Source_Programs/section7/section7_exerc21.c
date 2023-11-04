@@ -3,7 +3,6 @@
 int main() {
 
     int a[5], newA[5], b[5], newB[5], c[5], size = sizeof(a)/sizeof(a[0]), minor, temp, countA = 0, countB = 0, countC = 0;
-    
 
     // Enter elements in array A
     printf("*** ARRAY A ***\n\n");
