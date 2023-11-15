@@ -19,7 +19,6 @@ int main() {
                     k--;
                 }
             }
-
             if(majorHor > major) {
                 major = majorHor;
             }
@@ -39,7 +38,6 @@ int main() {
                     k--;
                 }
             }
-
             if(majorVert > major) {
                 major = majorVert;
             }
@@ -55,23 +53,16 @@ int main() {
             for (int k = i; k < ((size / 5) + i); k++) {
                 posL = 0;
                 for (int l = j; l < ((size / 5) + j); l++) {
-                    
                     if (posK == posL) {
                         majorMD *= array2D[k][l];
                     }
-                    
                     posL++;
-
                 }
-
                 posK++;
-
             }
-            
             if(majorMD > major) {
                 major = majorMD;
             }
-
         }
     }
 
