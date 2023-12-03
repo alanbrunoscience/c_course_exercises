@@ -4,7 +4,7 @@
 
 void data_input(char **str1, char **str2);
 int test_mem_alloc(char *string);
-void validate_s1_in_s2(char *str1, char *str2);
+int validate_s1_in_s2(char *str1, char *str2);
 
 int main() {
 
@@ -13,6 +13,12 @@ int main() {
     data_input(&str1, &str2);
 
     validate_s1_in_s2(str1, str2);
+
+    if(validate_s1_in_s2(str1, str2)){
+        printf("\nTrue\n");
+    } else {
+        printf("\nFalse\n");
+    }
 
     // Free the allocated memory
     free(str1);
@@ -71,42 +77,43 @@ int test_mem_alloc(char *string) {
     return 0;
 }
 
-void validate_s1_in_s2(char *str1, char *str2) {
+int validate_s1_in_s2(char *str1, char *str2) {
 
     if(strlen(str1) < strlen(str2)) {
-        printf("\nThe first string doesn't contain the second, once the second is larger than the first.\n");
-    } else {
-        if(strcmp(str1, str2) == 0) {
-            printf("\nBoth strings are equal. So, the first string contains the second.\n");
-        }
+        return 0;
+    }
 
-        int aux, countChar;
+    if(strcmp(str1, str2) == 0) {
+        return 1;
+    }
 
-        for(size_t i = 0; i <= strlen(str1) - strlen(str2); i++) {   
+    int aux, countChar;
 
-            if(str2[0] == str1[i]) {
-                
-                aux = i;
-                countChar = 0;
-                
-                for(size_t k = 0; k < strlen(str2); k++) {
-                    if(str2[k] == str1[aux]) {
-                        printf("%c\n", str2[k]);
-                        countChar++;
-                        aux++;
-                    }
+    for(size_t i = 0; i <= strlen(str1) - strlen(str2); i++) {   
+
+        if(str2[0] == str1[i]) {
+            
+            aux = i;
+            countChar = 0;
+            
+            for(size_t k = 0; k < strlen(str2); k++) {
+                if(str2[k] == str1[aux]) {
+                    countChar++;
+                    aux++;
                 }
             }
+
+            if(countChar == (int)strlen(str2)) {
+                return 1;
+                break;
+            }
         }
-
-        printf("%d\n", countChar);
-        printf("%d\n", (int)strlen(str2));
-
-        if(countChar == (int)strlen(str2)) {
-            printf("\nThe second string is in the first.\n");
-        } else {
-            printf("\nThe second string is not in the first.\n");
-        }
-
     }
+
+    if(countChar != (int)strlen(str2)) {
+        return 0;
+    }
+
+    return 0;
+
 }
