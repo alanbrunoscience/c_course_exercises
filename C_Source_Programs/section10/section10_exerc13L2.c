@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Functions prototype
 void data_input(char **str1, char **str2);
 int test_mem_alloc(char *string);
 int validate_s1_in_s2(char *str1, char *str2);
@@ -24,7 +25,7 @@ int main() {
     free(str1);
     free(str2);
 
-    // Set pointers to NULL after freeing to avoid using invalid memory in case you accidentally try to free the same memory again
+    // Setting the pointer to NULL after freeing the memory to avoid wild pointers (pointers that do not point to a valid object of the appropriate type)
     str1 = NULL;
     str2 = NULL;
 
@@ -114,6 +115,6 @@ int validate_s1_in_s2(char *str1, char *str2) {
         return 0;
     }
 
-    return 0;
+    return -1;
 
 }
