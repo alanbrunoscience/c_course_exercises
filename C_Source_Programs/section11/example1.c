@@ -14,7 +14,7 @@ int main() {
     printf("Enter text (press Enter to finish):\n");
 
     while ((ch = getchar()) != '\n') {
-        fputc(ch, fptr);
+        fputc(ch, fptr); // It writes character by character in the file.
     }
 
     fclose(fptr);

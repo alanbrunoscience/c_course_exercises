@@ -12,7 +12,7 @@ int main() {
         exit(1);
     } 
     
-    fputs("Ainda que eu falasse\n", fptr);
+    fputs("Ainda que eu falasse\n", fptr); // It writes line by line to the file.
     fputs("A língua dos homens\n", fptr);
     fputs("E falasse a língua dos anjos\n", fptr);
     fputs("Sem amor eu nada seria\n", fptr);

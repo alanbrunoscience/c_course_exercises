@@ -13,7 +13,7 @@ int main() {
         exit(1);
     }
 
-    while((ch = fgetc(fptr)) != EOF) {
+    while((ch = fgetc(fptr)) != EOF) { // It reads character by character in the file, up to EOF.
         printf("%c", ch);
     }
 
