@@ -24,7 +24,7 @@ int main() {
 
 void file_name_input(char **file_name) {
 
-    // Allocate memory dynamically for "file_name" variable
+    // Allocate memory dynamically for the "file_name" pointer
     *file_name = (char *)malloc(100 * sizeof(char));
 
     if (validate_mem_alloc(*file_name)) {
@@ -35,7 +35,7 @@ void file_name_input(char **file_name) {
     printf("Enter the file name, please: ");
     scanf(" %[^\n]", *file_name);
 
-    // Reallocate memory with the correct size of the string "file_name"
+    // Reallocate memory with the correct size of the pointer "file_name"
     *file_name = (char *)realloc(*file_name, (strlen(*file_name) + 1) * sizeof(char));
 
     if (validate_mem_alloc(*file_name)) {

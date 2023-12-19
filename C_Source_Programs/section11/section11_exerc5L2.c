@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Functions prototype
 void data_input(char **file_name, char **c);
-int test_mem_alloc(char *str);
+int validate_mem_alloc(char *str);
 void count_chars_file(char *file_name, char *c);
 
 int main() {
@@ -22,16 +23,16 @@ int main() {
 
 void data_input(char **file_name, char **c) {
 
-    // Allocate memory for 'file_name' and 'c' pointers
+    // Allocate memory for "file_name" and 'c' pointers
     *file_name = (char *)malloc(100 * sizeof(char));
 
-    if(test_mem_alloc(*file_name)) {
+    if(validate_mem_alloc(*file_name)) {
         exit(1);
     }
 
-    *c = (char *)malloc(1 * sizeof(char));
+    *c = (char *)malloc(100 * sizeof(char));
 
-    if(test_mem_alloc(*c)) {
+    if(validate_mem_alloc(*c)) {
         exit(1);
     }
 
@@ -39,10 +40,10 @@ void data_input(char **file_name, char **c) {
     printf("1) Enter the name of the file, please: ");
     scanf(" %[^\n]", *file_name);
 
-    // Reallocate memory with the correct size of the string "file_name"
+    // Reallocate memory with the correct size of the pointer "file_name"
     *file_name = (char *)realloc(*file_name, (strlen(*file_name) + 1) * sizeof(char));
 
-    if(test_mem_alloc(*file_name)) {
+    if(validate_mem_alloc(*file_name)) {
         exit(1);
     }
 
@@ -51,13 +52,13 @@ void data_input(char **file_name, char **c) {
 
 }
 
-int test_mem_alloc(char *str) {
-
+int validate_mem_alloc(char *str) {
+    
     if(str == NULL) {
         printf("\n-> Memory (re)allocation failed.\n");
         return 1;
     }
-
+    
     return 0;
 
 }
@@ -81,12 +82,14 @@ void count_chars_file(char *file_name, char *c) {
         }
     }
 
-    if(count_chars > 0) {
-        printf("\n-> The '%c' is repeated %d time(s) in the '%s'.\n", *c, count_chars, file_name);
+    if(count_chars == 0) {
+        printf("\nThe character '%c' was not repeated at any time in the file.\n", *c);
     } else {
-        printf("\n-> The '%c' is not repeated at any time in the '%s'.\n", *c, file_name);
+        printf("\nThe character '%c' was repeated %d time(s) in the file.\n", *c, count_chars);
     }
 
     fclose(fptr);
 
 }
+
+
