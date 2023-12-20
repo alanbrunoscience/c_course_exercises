@@ -8,6 +8,7 @@
 void file_name_input(char **file_name);
 int validate_mem_alloc(char *file_name);
 void create_new_file(char *file_name);
+void print_new_file_content();
 
 int main() {
 
@@ -15,6 +16,7 @@ int main() {
 
     file_name_input(&file_name);
     create_new_file(file_name);
+    print_new_file_content();
 
     free(file_name);
 
@@ -94,18 +96,22 @@ void create_new_file(char *file_name) {
     }
 
     fclose(fptr);
-
-    // Close the file before reopening for reading
     fclose(fptr2);
 
-    fptr2 = fopen("file2.txt", "r"); // Open in read mode this time
+}
+
+void print_new_file_content() {
+
+    FILE *fptr2;
+    char ch;
+
+    fptr2 = fopen("file2.txt", "r");
 
     if (fptr2 == NULL) {
         puts("\n-> It was not possible to open the file for reading.");
         exit(1);
     }
 
-    // Print new file
     printf("\n*** NEW FILE CONTENT ***\n\n");
     while ((ch = fgetc(fptr2)) != EOF) {
         printf("%c", ch);
