@@ -72,6 +72,7 @@ void file_names_input(char **file_name1, char **file_name2, char **file_name3) {
 }
 
 void allocate_memory(char **file_name) {
+
     *file_name = (char *)malloc(MAX_FILE_NAME_LENGTH * sizeof(char));
     
     if(validate_mem_alloc(*file_name)) {
@@ -80,11 +81,14 @@ void allocate_memory(char **file_name) {
 }
 
 void reallocate_memory(char **file_name) {
+
+    // Reallocate memory
     *file_name = (char *)realloc(*file_name, (strlen(*file_name) + 1) * sizeof(char));
 
-    if(validate_mem_alloc(*file_name)) {
+    if (validate_mem_alloc(*file_name)) {
         exit(1);
     }
+
 }
 
 int validate_mem_alloc(char *file_name) {
@@ -161,6 +165,8 @@ void print_file_content(char *file_name) {
     }
 
     printf("\n");
+
+    free(str);
 
     fclose(fptr);
 
