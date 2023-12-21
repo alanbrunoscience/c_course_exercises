@@ -79,7 +79,7 @@ void file_names_input(char **file_name1, char **file_name2) {
     scanf(" %[^\n]", *file_name2);
 
     while(strcmp(*file_name1, *file_name2) == 0) {
-        printf("\n-> The name of the second file is the same as the first. So, the content of the second will overwrite the first. Enter a different name to the second file, please: ");
+        printf("\n-> The name of the second file is the same as the first. So, the content of the second will overwrite the first. Enter a different name for the second file, please: ");
         scanf(" %[^\n]", *file_name2);
     }
 
