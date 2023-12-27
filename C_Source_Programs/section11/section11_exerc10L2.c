@@ -1,3 +1,33 @@
+/* FILE CONTENT
+
+São Paulo | 44420459
+Rio de Janeiro | 16054524
+Minas Gerais | 20538718
+Bahia | 14136417
+Paraná | 11443208
+Rio Grande do Sul | 10880506
+Pernambuco | 9058155
+Ceará | 8791688
+Pará | 8116132
+Santa Catarina | 7609601
+Goiás | 7055228
+Maranhão | 6775152
+Paraíba | 3974495
+Amazonas | 3941175
+Espírito Santo | 3833486
+Mato Grosso | 3658813
+Rio Grande do Norte | 3302406
+Piauí | 3269200
+Alagoas | 3127511
+Distrito Federal | 2817068
+Mato Grosso do Sul | 2756700
+Sergipe | 2209558
+Rondônia | 1581016
+Tocantins | 1511459
+Acre | 830026
+Amapá | 733508
+Roraima | 636303*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
