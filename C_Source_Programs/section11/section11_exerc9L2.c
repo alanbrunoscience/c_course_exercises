@@ -8,8 +8,8 @@
 void file_names_input(char **file_name1, char **file_name2, char **file_name3);
 int validate_file_existence(char *file_name);
 void allocate_memory(char **file_name);
-int validate_mem_alloc(char *file_name);
 void reallocate_memory(char **file_name);
+int validate_mem_alloc(char *file_name);
 void create_new_file(char *file_name1, char *file_name2, char *file_name3);
 void print_file_content(char *file_name);
 
