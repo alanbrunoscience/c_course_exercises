@@ -103,8 +103,8 @@ void data_input_validation_file(char *file_name) {
 
         if(phone_digits[0] == '0' && strlen(phone_digits) == 1) {
             puts("\nFinishing the program...");
+            free(name);
             break;
-
         } else {
 
             while((strlen(phone_digits) >= 1 && strlen(phone_digits) < 10) || (strlen(phone_digits) > 10)) {
@@ -118,9 +118,11 @@ void data_input_validation_file(char *file_name) {
 
             }
 
-            write_content_file(file_name, name, phone_digits);
-
         }
+
+        write_content_file(file_name, name, phone_digits);
+
+        free(name);
 
         i++;
 
@@ -145,9 +147,7 @@ void write_content_file(char *file_name, char *name, char *phone_digits) {
 
     FILE *fptr;
 
-    fptr = fopen(file_name, "a");
-
-    if(fptr == NULL) {
+    if((fptr = fopen(file_name, "a")) == NULL) {
         puts("\n-> Unable to open the file.");
         exit(1);
     } else {
@@ -155,8 +155,6 @@ void write_content_file(char *file_name, char *name, char *phone_digits) {
         fputs("Name: ", fptr);
 
         fputs(name, fptr);
-
-        free(name);
 
         fputs(" | ", fptr);
 
@@ -200,22 +198,21 @@ void print_content_file(char *file_name) {
 
     if(getline(&str, &len, fptr) == -1) {
         puts("\n-> The file is empty!");
+        free(str);
         fclose(fptr);
     } else {
 
-        fptr = fopen(file_name, "r");
-
         puts("\n****** PHONE BOOK ******\n");
 
-        while(getline(&str, &len, fptr) != -1) {
-            printf("%s", str);
-        }
+        do {
+            fputs(str, stdout);  // Use fputs instead of printf
+        } while (getline(&str, &len, fptr) != -1);
 
         printf("\n");
-
-        free(str);
-
+      
         fclose(fptr);
+    
+        free(str);
 
     }
 
