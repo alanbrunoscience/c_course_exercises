@@ -26,7 +26,9 @@ Rondônia | 1581016
 Tocantins | 1511459
 Acre | 830026
 Amapá | 733508
-Roraima | 636303*/
+Roraima | 636303
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
