@@ -1,10 +1,11 @@
 /* FILE CONTENT
 
-Name: Ademir Aparecido Rosa | Year of Birth: 08-18-1967
+Name: Ademir Aparecido Rosa | Year of Birth: 11-18-1969
 Name: Edena Jesus de Melo Rosa | Year of Birth: 12-21-1965
 Name: Vanessa Soares de Melo Rosa | Year of Birth: 09-27-1993
 Name: Alan Bruno de Melo Rosa | Year of Birth: 02-25-1997
 Name: Jean de Melo Rosa | Year of Birth: 06-14-1999
+Name: Alice Soares Rodrigues | Year of Birth: 11-13-2022
 
 */
 
