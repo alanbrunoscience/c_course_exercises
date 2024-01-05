@@ -25,39 +25,20 @@ typedef struct Birth_Dates {
 } Birth_Dates;
 
 // Functions prototype
-void data_input(char **filename);
+void filenames_input(char **input_file, char **output_file);
 int validade_file_existence(char *filename);
 void allocate_memory(char **filename);
 void reallocate_memory(char **filename);
 int validate_mem_alloc(char *filename);
-void date_input(int *year, int *day, int *index_mon, int months[]);
-int count_people_file(char *filename);
-void age_calculation(char *filename, int *total_reg, Birth_Dates people[]);
-void write_ages_file(char *filename, Birth_Dates people[]);
-void print_content_file(char *filename);
-
+void date_input(int months[], int *year, int *index_mon, int *day);
+int count_people_file(char *input_file);
+void age_calculation(char *input_file, int *total_reg, int *year, int *index_mon, int *day, Birth_Dates people[]);
+void write_ages_file(char *output_file, int *total_reg, Birth_Dates people[]);
+void print_content_file(char *output_file);
 
 int main() {
 
-    char *filename;
-
-    data_input(&filename);
-    int total_reg = count_people_file(filename);
-
-    Birth_Dates people[total_reg];
-
-    age_calculation(filename, &total_reg, people);
-
-    printf("Total: %d\n", total_reg);
-
-    free(filename);
-
-    return 0;
-
-}
-
-void data_input(char **filename) {
-
+    char *input_file, *output_file;
     int year, day, index_mon;
     int *months = malloc(12 * sizeof(int));
 
@@ -65,23 +46,50 @@ void data_input(char **filename) {
         puts("\n-> Memory allocation failed.");
         exit(1);
     }
+    
+    filenames_input(&input_file, &output_file);
+    date_input(months, &year, &index_mon, &day);
 
-    allocate_memory(filename);
+    int total_reg = count_people_file(input_file);
+    Birth_Dates people[total_reg];
 
-    printf("*** FILENAME INPUT ***\n\n");
-    printf("1) Enter the filename, please: ");
-    scanf(" %[^\n]", *filename);
+    age_calculation(input_file, &total_reg, &year, &index_mon, &day, people);
+    write_ages_file(output_file, &total_reg, people);
+    print_content_file(output_file);
 
-    while(validade_file_existence(*filename)) {
+    free(input_file);
+    free(output_file);
+    free(months);
+
+    return 0;
+
+}
+
+void filenames_input(char **input_file, char **output_file) {
+
+    allocate_memory(input_file);
+    allocate_memory(output_file);
+
+    printf("*** FILENAMES INPUT ***\n\n");
+    printf("1) Enter the name of the first file to be read: ");
+    scanf(" %[^\n]", *input_file);
+
+    while(validade_file_existence(*input_file)) {
         printf("\n-> Unable to open the file. Make sure that the file exists or that the name is correct. Enter the filename again: ");
-        scanf(" %[^\n]", *filename);
+        scanf(" %[^\n]", *input_file);
     }
 
-    reallocate_memory(filename);
+    reallocate_memory(input_file);
 
-    date_input(&year, &day, &index_mon, months);
+    printf("\n2) Enter the name of the file to be write: ");
+    scanf(" %[^\n]", *output_file);
 
-    free(months);
+    while(strcmp(*input_file, *output_file) == 0) {
+        printf("\n-> The name of this file is the same as the file provided previously. So, the content of the second will overwrite the first. Enter a different name for the second file, please: ");
+        scanf(" %[^\n]", *output_file);
+    }
+
+    reallocate_memory(output_file);
 
 }
 
@@ -130,7 +138,7 @@ int validate_mem_alloc(char *filename) {
 
 }
 
-void date_input(int *year, int *day, int *index_mon, int months[]) {
+void date_input(int months[], int *year, int *index_mon, int *day) {
 
     int days_of_months[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -138,7 +146,7 @@ void date_input(int *year, int *day, int *index_mon, int months[]) {
         months[i] = days_of_months[i];
     }
 
-    printf("\n*** DATE INPUT ***\n\n");
+    printf("\n\n*** DATE INPUT ***\n\n");
     printf("1) Enter the current year, please: ");
     scanf("%d", year);
 
@@ -164,13 +172,13 @@ void date_input(int *year, int *day, int *index_mon, int months[]) {
 
 }
 
-int count_people_file(char *filename) {
+int count_people_file(char *input_file) {
 
     FILE *fptr;
     Birth_Dates personal_info;
     int count_reg = 0;
 
-    fptr = fopen(filename, "r");
+    fptr = fopen(input_file, "r");
 
     while(fscanf(fptr, "Name: %49[^|] | Year of Birth: %2d-%2d-%4d\n", personal_info.name, &personal_info.month, &personal_info.day, &personal_info.year) == 4) {
         count_reg++;
@@ -182,27 +190,80 @@ int count_people_file(char *filename) {
 
 }
 
-void age_calculation(char *filename, int *total_reg, Birth_Dates people[]) {
+void age_calculation(char *input_file, int *total_reg, int *year, int *index_mon, int *day, Birth_Dates people[]) {
 
     FILE *fptr;
+    int dif_years = 0;
 
-    fptr = fopen(filename, "r");
+    fptr = fopen(input_file, "r");
 
     // Read and store each person's personal information in the array
     for(int i = 0; i < *total_reg; i++) {
-        fscanf(fptr, "Name: %49[^|] | Year of Birth: %2d-%2d-%4d\n", personal_info.name, &personal_info.month, &personal_info.day, &personal_info.year);
+        fscanf(fptr, "Name: %49[^|] | Year of Birth: %2d-%2d-%4d\n", people[i].name, &people[i].month, &people[i].day, &people[i].year);
 
-        
+        dif_years = *year - people[i].year;
+
+        if(people[i].month > *index_mon) {
+            dif_years -= 1;
+            people[i].age = dif_years;
+        }
+
+        if(people[i].month == *index_mon) {
+            if(people[i].day > *day) {
+                dif_years -= 1;
+                people[i].age = dif_years;
+            } else {
+                people[i].age = dif_years;
+            }
+        }
+
+        if(*index_mon > people[i].month) {
+            people[i].age = dif_years;
+        }
+
     }
 
-
-
-}
-
-void write_ages_file(char *filename, Birth_Dates people[]) {
+    fclose(fptr);
 
 }
 
-void print_content_file(char *filename) {
+void write_ages_file(char *output_file, int *total_reg, Birth_Dates people[]) {
+
+    FILE *fptr;
+
+    if((fptr = fopen(output_file, "w")) == NULL) {
+        puts("\n-> It was not possible to open the file.");
+        exit(1);
+    }
+
+    for(int i = 0; i < *total_reg; i++) {
+        fprintf(fptr, "%dº) Name: %s | Year of Birth: %d-%d-%d | Current Age: %d year(s) old\n", i+1, people[i].name, people[i].month, people[i].day, people[i].year, people[i].age);
+    }
+        
+    fclose(fptr);
+
+}
+
+void print_content_file(char *output_file) {
+
+    FILE *fptr;
+    char *str = NULL;
+    size_t len = 0;
+
+    if ((fptr = fopen(output_file, "r")) == NULL) {
+        puts("\n-> It was not possible to open the file for reading.");
+        exit(1);
+    }
+
+    printf("\n\n*** PRINT GENERATED FILE CONTENT ***\n\n");
+    while (getline(&str, &len, fptr) != -1) {
+        printf("%s", str);
+    }
+
+    printf("\n");
+
+    free(str);
+
+    fclose(fptr);
 
 }

@@ -210,11 +210,9 @@ void create_most_pop_city_file(char *output_file, int *index, City cities[]) {
     if((fptr = fopen(output_file, "w")) == NULL) {
         puts("\n-> It was not possible to open the file.");
         exit(1);
-    } else {
-
-        fprintf(fptr, "- City: %s\n- Population: %llu", cities[*index].name, cities[*index].population);
-
     }
+
+    fprintf(fptr, "- City: %s\n- Population: %llu", cities[*index].name, cities[*index].population);
 
     fclose(fptr);
 
