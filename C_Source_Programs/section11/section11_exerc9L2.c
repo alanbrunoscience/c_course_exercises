@@ -49,7 +49,7 @@ void file_names_input(char **file_name1, char **file_name2, char **file_name3) {
     scanf(" %[^\n]", *file_name1);
 
     while(validate_file_existence(*file_name1)) {
-        printf("\n-> It was not possible to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
+        printf("\n-> Unable to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
         scanf(" %[^\n]", *file_name1);
     }
 
@@ -59,7 +59,7 @@ void file_names_input(char **file_name1, char **file_name2, char **file_name3) {
     scanf(" %[^\n]", *file_name2);
 
     while(validate_file_existence(*file_name2)) {
-        printf("\n-> It was not possible to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
+        printf("\n-> Unable to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
         scanf(" %[^\n]", *file_name2);
     }
 
@@ -70,7 +70,7 @@ void file_names_input(char **file_name1, char **file_name2, char **file_name3) {
 
     reallocate_memory(file_name2);
 
-    printf("\n3) Enter the name of the file to be write: ");
+    printf("\n3) Enter the name of the file to be written: ");
     scanf(" %[^\n]", *file_name3);
 
     while(strcmp(*file_name1, *file_name3) == 0 || strcmp(*file_name2, *file_name3) == 0) {
@@ -138,7 +138,7 @@ void create_new_file(char *file_name1, char *file_name2, char *file_name3) {
 
     if((fptr3 = fopen(file_name3, "a")) == NULL) {
 
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
 
     } else {
@@ -211,7 +211,7 @@ void print_file_content(char *file_name) {
     fptr = fopen(file_name, "r");
 
     if (fptr == NULL) {
-        puts("\n-> It was not possible to open the file for reading.");
+        puts("\n-> Unable to open the file for reading.");
         exit(1);
     }
 

@@ -98,7 +98,7 @@ void file_names_input(char **input_file, char **output_file) {
 
     reallocate_memory(input_file);
 
-    printf("\n2) Enter the name of the file to be write: ");
+    printf("\n2) Enter the name of the file to be written: ");
     scanf(" %[^\n]", *output_file);
 
     while(strcmp(*input_file, *output_file) == 0) {
@@ -208,7 +208,7 @@ void create_most_pop_city_file(char *output_file, int *index, City cities[]) {
     FILE *fptr;
 
     if((fptr = fopen(output_file, "w")) == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 
@@ -225,7 +225,7 @@ void print_file_content(char *file_name) {
     size_t len = 0;
 
     if ((fptr = fopen(file_name, "r")) == NULL) {
-        puts("\n-> It was not possible to open the file for reading.");
+        puts("\n-> Unable to open the file for reading.");
         exit(1);
     }
 

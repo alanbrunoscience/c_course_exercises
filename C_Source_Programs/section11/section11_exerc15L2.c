@@ -34,7 +34,7 @@ int validate_mem_alloc(char *filename);
 void date_input(int months[], int *year, int *index_mon, int *day);
 int count_people_file(char *input_file);
 void age_calculation(char *input_file, int *total_reg, int *year, int *index_mon, int *day, Birth_Dates people[]);
-void write_ages_file(char *output_file, int *total_reg, Birth_Dates people[]);
+void write_ages_categories_file(char *output_file, int *total_reg, Birth_Dates people[]);
 void print_content_file(char *output_file);
 
 int main() {
@@ -55,7 +55,7 @@ int main() {
     Birth_Dates people[total_reg];
 
     age_calculation(input_file, &total_reg, &year, &index_mon, &day, people);
-    write_ages_file(output_file, &total_reg, people);
+    write_ages_categories_file(output_file, &total_reg, people);
     print_content_file(output_file);
 
     free(input_file);
@@ -228,17 +228,23 @@ void age_calculation(char *input_file, int *total_reg, int *year, int *index_mon
 
 }
 
-void write_ages_file(char *output_file, int *total_reg, Birth_Dates people[]) {
+void write_ages_categories_file(char *output_file, int *total_reg, Birth_Dates people[]) {
 
     FILE *fptr;
 
     if((fptr = fopen(output_file, "w")) == NULL) {
-        puts("\n-> Unable to open the file.");
+        puts("\n-> It was not possible to open the file.");
         exit(1);
     }
 
     for(int i = 0; i < *total_reg; i++) {
-        fprintf(fptr, "%dº) Name: %s | Year of Birth: %d-%d-%d | Current Age: %d year(s) old\n", i+1, people[i].name, people[i].month, people[i].day, people[i].year, people[i].age);
+        if(people[i].age < 18) {
+            fprintf(fptr, "%dº) Name: %s | Year of Birth: %d-%d-%d | Current Age: %d year(s) old | Category: Under Age\n", i+1, people[i].name, people[i].month, people[i].day, people[i].year, people[i].age);
+        } else if (people[i].age > 18) {
+            fprintf(fptr, "%dº) Name: %s | Year of Birth: %d-%d-%d | Current Age: %d year(s) old | Category: Over 18\n", i+1, people[i].name, people[i].month, people[i].day, people[i].year, people[i].age);
+        } else {
+            fprintf(fptr, "%dº) Name: %s | Year of Birth: %d-%d-%d | Current Age: %d year(s) old | Category: Coming Of Age\n", i+1, people[i].name, people[i].month, people[i].day, people[i].year, people[i].age);
+        }
     }
         
     fclose(fptr);
@@ -252,7 +258,7 @@ void print_content_file(char *output_file) {
     size_t len = 0;
 
     if ((fptr = fopen(output_file, "r")) == NULL) {
-        puts("\n-> Unable to open the file for reading.");
+        puts("\n-> It was not possible to open the file for reading.");
         exit(1);
     }
 

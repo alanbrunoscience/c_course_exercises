@@ -66,14 +66,14 @@ void create_new_file(char *file_name) {
     fptr = fopen(file_name, "r");
 
     if(fptr == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 
     fptr2 = fopen("file2.txt", "w");
 
     if(fptr2 == NULL) {
-        puts("\n-> It was not possible to create the file.");
+        puts("\n-> Unable to create the file.");
         exit(1);
     } else {
         while((ch = fgetc(fptr)) != EOF) {
@@ -108,7 +108,7 @@ void print_new_file_content() {
     fptr2 = fopen("file2.txt", "r");
 
     if (fptr2 == NULL) {
-        puts("\n-> It was not possible to open the file for reading.");
+        puts("\n-> Unable to open the file for reading.");
         exit(1);
     }
 

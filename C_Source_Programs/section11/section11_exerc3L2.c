@@ -63,7 +63,7 @@ int count_lines_file(char *file_name) {
     fptr = fopen(file_name, "r");
 
     if(fptr == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 
@@ -98,7 +98,7 @@ void search_vowels_file(char *file_name) {
     fptr = fopen(file_name, "r");
 
     if(fptr == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 

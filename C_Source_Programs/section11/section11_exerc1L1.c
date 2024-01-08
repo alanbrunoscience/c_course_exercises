@@ -21,7 +21,7 @@ void write_file(char *chars, char *name_file) {
     puts("********************** WRITING IN THE FILE **********************\n");
 
     if (fptr == NULL) {
-        puts("It was not possible to open the file.");
+        puts("Unable to open the file.");
         exit(1);
     }
 
@@ -45,7 +45,7 @@ void read_file(char *chars, char *name_file) {
     puts("\n************************ READING THE FILE ************************\n");
 
     if (fptr == NULL) {
-        puts("It was not possible to open the file.");
+        puts("Unable to open the file.");
         exit(1);
     }
 

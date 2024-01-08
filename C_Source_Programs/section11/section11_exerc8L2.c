@@ -75,7 +75,7 @@ void file_names_input(char **file_name1, char **file_name2) {
 
     reallocate_memory(file_name1);
 
-    printf("\n2) Enter the name of the file to be write: ");
+    printf("\n2) Enter the name of the file to be written: ");
     scanf(" %[^\n]", *file_name2);
 
     while(strcmp(*file_name1, *file_name2) == 0) {
@@ -93,12 +93,12 @@ void create_new_file(char *file_name1, char *file_name2) {
     char ch;
 
     if((fptr1 = fopen(file_name1, "r")) == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 
     if((fptr2 = fopen(file_name2, "w")) == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to create the file.");
         exit(1);
     } else {
         while((ch = fgetc(fptr1)) != EOF) {
@@ -129,7 +129,7 @@ void print_old_file_content(char *file_name1) {
     fptr1 = fopen(file_name1, "r");
 
     if (fptr1 == NULL) {
-        puts("\n-> It was not possible to open the file for reading.");
+        puts("\n-> Unable to open the file for reading.");
         exit(1);
     }
 
@@ -152,7 +152,7 @@ void print_new_file_content(char *file_name2) {
     fptr2 = fopen(file_name2, "r");
 
     if (fptr2 == NULL) {
-        puts("\n-> It was not possible to open the file for reading.");
+        puts("\n-> Unable to open the file for reading.");
         exit(1);
     }
 

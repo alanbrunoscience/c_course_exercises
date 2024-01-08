@@ -60,7 +60,7 @@ void count_lines_file(char *file_name) {
     fptr = fopen(file_name, "r");
 
     if(fptr == NULL) {
-        printf("\n-> It was not possible to open the file.\n");
+        printf("\n-> Unable to open the file.\n");
         exit(1);
     }
 

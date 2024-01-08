@@ -34,7 +34,7 @@ void file_input_name(char **file_name) {
     scanf(" %[^\n]%*c", *file_name);
 
     while(validate_file_existence(*file_name)) {
-        printf("\n-> It was not possible to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
+        printf("\n-> Unable to open the file. Make sure that this file exists or that the name is correct. Inform the name of the file again: ");
         scanf(" %[^\n]%*c", *file_name);
     }
 
