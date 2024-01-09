@@ -233,7 +233,7 @@ void write_ages_categories_file(char *output_file, int *total_reg, Birth_Dates p
     FILE *fptr;
 
     if((fptr = fopen(output_file, "w")) == NULL) {
-        puts("\n-> It was not possible to open the file.");
+        puts("\n-> Unable to open the file.");
         exit(1);
     }
 
