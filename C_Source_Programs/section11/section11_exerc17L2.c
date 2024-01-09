@@ -1,3 +1,11 @@
+/* FILE CONTENT 
+
+3 3 2
+1 0
+1 2
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
