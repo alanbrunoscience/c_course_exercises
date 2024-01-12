@@ -183,4 +183,3 @@ void print_content_file(char *filename) {
     fclose(fptr);
 
 }
-
