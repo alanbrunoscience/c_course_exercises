@@ -147,7 +147,7 @@ void write_matrix_file(char *output_file, int *i, int *j, int canceled_pos[][2],
     int array2D[*i][*j];
 
     if((fptr = fopen(output_file, "w")) == NULL) {
-        puts("\n-> Unable to open the file.");
+        puts("\n-> Unable to create the file.");
         exit(1);
     }
 
