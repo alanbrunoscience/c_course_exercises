@@ -1,4 +1,5 @@
 // Function prototype
+void quicksort(float *array, int start, int end);
 int partition(float *array, int start, int end);
 
 void quicksort(float *array, int start, int end) {
@@ -13,7 +14,7 @@ void quicksort(float *array, int start, int end) {
 
 int partition(float *array, int start, int end) {
     
-    int pivot = array[end];
+    float pivot = array[end];
     int p_index = start;
 
     for(int i = start; i < end; i++) {

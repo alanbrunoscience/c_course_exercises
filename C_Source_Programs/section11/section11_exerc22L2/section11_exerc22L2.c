@@ -24,7 +24,8 @@ int count_number_grades(char *input_file);
 void read_file_info(char *input_file, char *output_file, int *number_grades, float **grades);
 void alloc_mem_grades_array(char *input_file, char *output_file, int *number_grades, float **grades);
 void validate_content_file(char *input_file, char *output_file, float *grades);
-void create_new_file(char *input_file, char *output_file, float *grades);
+void create_new_file(char *input_file, char *output_file, int *number_grades, float *grades);
+int print_content_file(char *filename);
 
 int main() {
 
@@ -34,10 +35,29 @@ int main() {
     filenames_rw_input(&input_file, &output_file);
     int number_grades = count_number_grades(input_file);
     read_file_info(input_file, output_file, &number_grades, &grades);
+
+    printf("\n*** CONTENT OF THE READ FILE ***\n\n");
+    int error_code = print_content_file(input_file);
+
+    if(error_code) {
+        free(input_file);
+        free(output_file);
+        free(grades);
+        exit(1);
+    }
+    
     quicksort(grades, 0, number_grades - 1);
 
-    for(int i = 0; i < number_grades; i++) {
-        printf("%.2f ", grades[i]);
+    create_new_file(input_file, output_file, &number_grades, grades);
+
+    printf("\n*** CONTENT OF THE EDITED FILE ***\n\n");
+    error_code = print_content_file(output_file);
+
+    if(error_code) {
+        free(input_file);
+        free(output_file);
+        free(grades);
+        exit(1);
     }
 
     free(input_file);
@@ -237,20 +257,64 @@ void validate_content_file(char *input_file, char *output_file, float *grades) {
 
 }
 
-void create_new_file(char *input_file, char *output_file, float *grades) {
+void create_new_file(char *input_file, char *output_file, int *number_grades, float *grades) {
  
     FILE *fptr1, *fptr2;
+    char *student_name = NULL;
+    size_t len = 0;
 
-    if((fptr = fopen(output_file, "w")) == NULL) {
+    if((fptr1 = fopen(output_file, "w")) == NULL) {
         puts("\n-> Unable to open the file.");
         free(input_file);
         free(output_file);
         free(grades);
         exit(1);
     }
-
     
-    // Continue from here
+    fputs("*** STUDENT'S INFO ****\n\n", fptr1);
 
+    fptr2 = fopen(input_file, "r");
+
+    getline(&student_name, &len, fptr2);
+
+    fprintf(fptr1, "-> Student's Name: %s\n", student_name);
+
+    fputs("*** GRADES SORTED ****\n\n", fptr1);
+
+    for(int i = 0; i < *number_grades; i++) {
+        fprintf(fptr1, "%dº) %.2f\n", (i+1), grades[i]);
+    }
+
+    free(student_name);
+
+    fclose(fptr1);
+    fclose(fptr2);
+
+    printf("\n");
+
+}
+
+int print_content_file(char *filename) {
+
+    FILE *fptr;
+    char *str = NULL;
+    size_t len = 0;
+
+    if ((fptr = fopen(filename, "r")) == NULL) {
+        puts("\n-> Unable to open the file for reading.");
+        return 1;
+    }
+
+    while (getline(&str, &len, fptr) != -1) {
+        printf("%s", str);
+    }
+
+    printf("\n");
+
+    free(str);
+
+    fclose(fptr);
+
+    return 0;
 
 }
