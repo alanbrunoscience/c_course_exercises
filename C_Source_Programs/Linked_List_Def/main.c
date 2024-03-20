@@ -24,7 +24,7 @@ int main() {
         switch(option) {
             case 1:
 
-                printf("\n*** PROD INFO ***\n\n");
+                printf("\n*** PRODUCT INFO ***\n\n");
                 printf("1) Product code: ");
                 scanf("%u", &code);
 
@@ -49,7 +49,7 @@ int main() {
 
             case 2:
 
-                printf("\n*** PROD INFO ***\n\n");
+                printf("\n*** PRODUCT INFO ***\n\n");
                 printf("1) Product code: ");
                 scanf("%u", &code);
 
@@ -74,24 +74,53 @@ int main() {
 
             case 3:
 
-                printf("\n*** PROD INFO ***\n\n");
-                printf("1) Product code: ");
-                scanf("%d", &code);
-                printf("2) Product name: ");
-                scanf(" %[^\n]", name);
-                printf("3) Amount: ");
-                scanf("%d", &amount);
+                if(product_list == NULL) {
+                    printf("\n-> The list is empty! Firstly, insert an element on the list...\n");
+                    break;
+                }
 
-                printf("\n-> Enter a code of reference to make it possible to insert the new product after this code: ");
+                printf("\n*** REFERENCE CODE ***\n\n");
+            
+                printf("1) Enter a code of reference to make it possible to insert the new product after this code: ");
                 scanf("%d", &prev_code);
 
-                insert_at_the_middle(&product_list, code, name, amount, prev_code);
+                while(prev_code < 0) {
+                    printf("\n-> Invalid code! Enter a code greater or equal to 0: ");
+                    scanf("%d", &prev_code);
+                }
+
+                int func_return = validate_code_existence(&product_list, prev_code);
+
+                if(func_return == 0) {
+                    
+                    printf("\n*** PRODUCT INFO ***\n\n");
+                    printf("1) Product code: ");
+                    scanf("%u", &code);
+
+                    while(code < 0) {
+                        printf("\n-> Invalid code! Enter a code greater or equal to 0: ");
+                        scanf("%d", &code);
+                    }
+
+                    printf("\n2) Product name: ");
+                    scanf(" %[^\n]", name);
+                    printf("\n3) Amount: ");
+                    scanf("%d", &amount);
+
+                    while(amount <= 0) {
+                        printf("\n-> Invalid amount! Enter an amount greater than 0: ");
+                        scanf("%d", &amount);
+                    }
+
+                    insert_at_the_middle(&product_list, code, name, amount, prev_code);
+
+                }              
 
                 break;
 
             case 4:
 
-                printf("\n*** PROD INFO ***\n\n");
+                printf("\n*** PRODUCT INFO ***\n\n");
                 printf("1) Product code: ");
                 scanf("%d", &code);
                 printf("2) Product name: ");

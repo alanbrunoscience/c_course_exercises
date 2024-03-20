@@ -6,7 +6,7 @@
 int insertion_validation(Product **product_list, int code, char name[], int amount) {
 
     Product *current = *product_list;
-    int yes_no = 0;
+    int yes_no = 0, amount_update = 0;
 
     while (current != NULL) {
         if (current -> code == code) {
@@ -25,16 +25,45 @@ int insertion_validation(Product **product_list, int code, char name[], int amou
                     strncpy(current -> name, name, sizeof(current -> name) - 1); // Copy name
                     current -> name[sizeof(current -> name) - 1] = '\0'; // Ensure null-termination
                     current -> amount = amount;
-                    return 1;
+                    return 0;
 
                 } else {
-                    return 0;
+                    return 1;
                 }
 
             } else {
-                printf("\n-> Updating item information...\n");
-                current -> amount = current -> amount + amount;
-                return 1;
+
+                printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No)?: ");
+                scanf("%d", &yes_no);
+
+                while(yes_no != 1 && yes_no != 2) {
+                    printf("\n-> Invalid option! Choose 1 or 2, please: ");
+                    scanf("%d", &yes_no);
+                }
+
+                if(yes_no == 1) {
+                    printf("\n-> Would you like to increase the amount or only update it? Press '1' to increment the amount or '2' to only update it: ");
+                    scanf("%d", &amount_update);
+
+                    while(amount_update != 1 && amount_update != 2) {
+                        printf("\n-> Invalid option! Choose 1 or 2, please: ");
+                        scanf("%d", &amount_update);
+                    }
+
+                    if(amount_update == 1) {
+                        current -> amount = current -> amount + amount;
+                        printf("\n-> Updating item information...\n");
+                        return 0;
+                    } else {
+                        current -> amount = amount;
+                        printf("\n-> Updating item information...\n");
+                        return 0;
+                    }
+
+                } else {
+                    return 1;
+                }
+                
             }
         }
 
@@ -108,41 +137,59 @@ void insert_at_the_end(Product **product_list, int code, char name[], int amount
 
 }
 
-void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int prev_code) {
+int validate_code_existence(Product **product_list, int prev_code) {
 
     Product *current = *product_list;
+    int found_element = 0;
 
-    while (current != NULL) {
-        if (current -> code == code) {
-            current -> amount++;
-            return;
+    while(current != NULL) {
+        if (current -> code == prev_code) {
+            found_element++;
         }
         current = current -> next;
     }
 
-    Product *aux, *new_product = (Product *)malloc(sizeof(Product));
-
-    if(new_product == NULL) {
-        puts("\n-> Memory allocation failed.");
-        return;
+    if(found_element) {
+        printf("\n-> Code found successfully!\n\n");
+        return 0;
+    } else {
+        printf("\n-> The specified code doesn't exist on the list yet. Firstly, insert an element with this code...\n");
+        return 1;
     }
 
-    new_product -> code = code;
-    strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
-    new_product -> name[sizeof(new_product -> name) - 1] = '\0';
-    new_product -> amount = amount;
+}
 
-    // Is this the first node?
-    if(*product_list == NULL) {
-        new_product -> next = NULL;
-        *product_list = new_product;
-    } else {
-        aux = *product_list;
-        while(aux -> code != prev_code && aux -> next) {
-            aux = aux -> next;
+void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int prev_code) {
+
+    int func_return = insertion_validation(product_list, code, name, amount);
+
+    if(func_return == 2) {
+
+        Product *aux, *new_product = (Product *)malloc(sizeof(Product));
+
+        if(new_product == NULL) {
+            puts("\n-> Memory allocation failed.");
+            return;
         }
-        new_product -> next = aux -> next;
-        aux -> next = new_product;
+
+        new_product -> code = code;
+        strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
+        new_product -> name[sizeof(new_product -> name) - 1] = '\0';
+        new_product -> amount = amount;
+
+        // Is this the first node?
+        if(*product_list == NULL) {
+            new_product -> next = NULL;
+            *product_list = new_product;
+        } else {
+            aux = *product_list;
+            while(aux -> code != prev_code && aux -> next) {
+                aux = aux -> next;
+            }
+            new_product -> next = aux -> next;
+            aux -> next = new_product;
+        }
+
     }
 
 }
