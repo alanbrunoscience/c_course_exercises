@@ -9,6 +9,8 @@ typedef struct Product {
 } Product;
 
 // Function prototypes
+int update_elem_dif_names(Product *current, char name[], int amount);
+int update_elem_same_names(Product *current, int amount);
 int insertion_validation(Product **product_list, int code, char name[], int amount);
 void insert_at_the_beginning(Product **product_list, int code, char name[], int amount);
 void insert_at_the_end(Product **product_list, int code, char name[], int amount);

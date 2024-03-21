@@ -3,66 +3,89 @@
 #include <string.h>
 #include "linked_list.h"
 
+int update_elem_dif_names(Product *current, char name[], int amount) {
+
+    int yes_no = 0;
+
+    printf("\n-> The names are different! Are you sure that you want to overwrite this product (1 - Yes / 2 - No)?: ");
+    scanf("%d", &yes_no);
+
+    while(yes_no != 1 && yes_no != 2) {
+        printf("\n-> Invalid option! Choose 1 or 2, please: ");
+        scanf("%d", &yes_no);
+    }
+
+    if(yes_no == 1) {
+        strncpy(current -> name, name, sizeof(current -> name) - 1); // Copy name
+        current -> name[sizeof(current -> name) - 1] = '\0'; // Ensure null-termination
+        current -> amount = amount;
+
+        return 0;
+
+    } else {
+
+        return 1;
+
+    }
+
+}
+
+int update_elem_same_names(Product *current, int amount) {
+
+    int yes_no = 0, amount_update = 0;
+
+    printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No)?: ");
+    scanf("%d", &yes_no);
+
+    while(yes_no != 1 && yes_no != 2) {
+        printf("\n-> Invalid option! Choose 1 or 2, please: ");
+        scanf("%d", &yes_no);
+    }
+
+    if(yes_no == 1) {
+        printf("\n-> Would you like to increase the amount or only update it? Press '1' to increment the amount or '2' to only update it: ");
+        scanf("%d", &amount_update);
+
+        while(amount_update != 1 && amount_update != 2) {
+            printf("\n-> Invalid option! Choose 1 or 2, please: ");
+            scanf("%d", &amount_update);
+        }
+
+        if(amount_update == 1) {
+            current -> amount = current -> amount + amount;
+            return 0;
+        } else {
+            current -> amount = amount;
+            return 0;
+        }
+
+    } else
+
+        return 1;
+
+}
+
 int insertion_validation(Product **product_list, int code, char name[], int amount) {
 
     Product *current = *product_list;
-    int yes_no = 0, amount_update = 0;
 
     while (current != NULL) {
         if (current -> code == code) {
             if (strcmp(current -> name, name) != 0) {
 
-                printf("\n-> The names are different! Are you sure that you want to overwrite this product (1 - Yes / 2 - No)?: ");
-                scanf("%d", &yes_no);
+                int result = update_elem_dif_names(current, name, amount);
 
-                while(yes_no != 1 && yes_no != 2) {
-                    printf("\n-> Invalid option! Choose 1 or 2, please: ");
-                    scanf("%d", &yes_no);
-                }
-
-                if(yes_no == 1) {
-
-                    strncpy(current -> name, name, sizeof(current -> name) - 1); // Copy name
-                    current -> name[sizeof(current -> name) - 1] = '\0'; // Ensure null-termination
-                    current -> amount = amount;
-                    return 0;
-
-                } else {
-                    return 1;
-                }
+                return result;
 
             } else {
 
-                printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No)?: ");
-                scanf("%d", &yes_no);
+                int result = update_elem_same_names(current, amount);
 
-                while(yes_no != 1 && yes_no != 2) {
-                    printf("\n-> Invalid option! Choose 1 or 2, please: ");
-                    scanf("%d", &yes_no);
+                if(result == 0) {
+                    printf("\n-> Updating item information...\n");
                 }
 
-                if(yes_no == 1) {
-                    printf("\n-> Would you like to increase the amount or only update it? Press '1' to increment the amount or '2' to only update it: ");
-                    scanf("%d", &amount_update);
-
-                    while(amount_update != 1 && amount_update != 2) {
-                        printf("\n-> Invalid option! Choose 1 or 2, please: ");
-                        scanf("%d", &amount_update);
-                    }
-
-                    if(amount_update == 1) {
-                        current -> amount = current -> amount + amount;
-                        printf("\n-> Updating item information...\n");
-                        return 0;
-                    } else {
-                        current -> amount = amount;
-                        printf("\n-> Updating item information...\n");
-                        return 0;
-                    }
-
-                } else {
-                    return 1;
-                }
+                return result;
                 
             }
         }
