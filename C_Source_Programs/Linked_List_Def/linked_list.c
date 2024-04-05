@@ -233,19 +233,27 @@ void insert_sorted(Product **product_list, int code, char name[], int amount) {
         new_product -> amount = amount;
 
         if(*product_list == NULL) {
+
             new_product -> next = NULL;
             *product_list = new_product;
+
         }
         else if(new_product -> code < (*product_list) -> code) {
+
             new_product -> next = *product_list;
             *product_list = new_product;
+
         } else {
+
             aux = *product_list;
-            while(aux -> next && new_product -> code > aux -> next -> code){
+
+            while(aux -> next && new_product -> code > aux -> next -> code) {
                 aux = aux -> next;
             }
+
             new_product -> next = aux -> next;
             aux -> next = new_product;
+
         }
     }
 
@@ -272,22 +280,19 @@ void remove_element(Product **product_list, int code, int amount) {
 
         aux = *product_list;
 
-        while(aux -> next && aux -> next -> code != code) {
+        while(aux -> next -> code != code) {
             aux = aux -> next;
         }
 
-        if(aux -> next) {
-            node_removed = aux -> next;
+        node_removed = aux -> next;
 
-            if(node_removed -> amount == amount) {
-                aux -> next = node_removed -> next;
-                printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
-                free(node_removed);
-            } else {
-                node_removed -> amount = node_removed -> amount - amount;
-                printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
-            }
-
+        if(node_removed -> amount == amount) {
+            aux -> next = node_removed -> next;
+            printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
+            free(node_removed);
+        } else {
+            node_removed -> amount = node_removed -> amount - amount;
+            printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
         }
 
     }
