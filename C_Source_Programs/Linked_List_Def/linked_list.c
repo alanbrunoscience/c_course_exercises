@@ -5,9 +5,9 @@
 
 int update_elem_dif_names(Product *current, char name[], int amount) {
 
-    int yes_no = 0;
+    int yes_no;
 
-    printf("\n-> The names are different! Are you sure that you want to overwrite this product (1 - Yes / 2 - No)?: ");
+    printf("\n-> The element already exists on the list, but the names are different! Are you sure that you want to overwrite this product? (1 - Yes / 2 - No): ");
     scanf("%d", &yes_no);
 
     while(yes_no != 1 && yes_no != 2) {
@@ -32,9 +32,9 @@ int update_elem_dif_names(Product *current, char name[], int amount) {
 
 int update_elem_same_names(Product *current, int amount) {
 
-    int yes_no = 0, amount_update = 0;
+    int yes_no, amount_update;
 
-    printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No)?: ");
+    printf("\n-> The element already exists on the list, but the names are the same! Do you want to update item information? (1 - Yes / 2 - No): ");
     scanf("%d", &yes_no);
 
     while(yes_no != 1 && yes_no != 2) {
@@ -117,11 +117,14 @@ void insert_at_the_beginning(Product **product_list, int code, char name[], int 
         new_product -> name[sizeof(new_product -> name) - 1] = '\0'; // Ensure null-termination
         new_product -> amount = amount;
 
-        // Set the next pointer of the new node to the current head of the list
-        new_product -> next = *product_list;
+        if(*product_list) {
+            new_product -> next = *product_list;
+            *product_list = new_product;    
+        } else {
+            new_product -> next = NULL;
+            *product_list = new_product;
+        }
 
-        // Update the head of the list to point to the new node
-        *product_list = new_product;
     }
 
 }
@@ -146,48 +149,77 @@ void insert_at_the_end(Product **product_list, int code, char name[], int amount
 
         new_product -> next = NULL;
 
-        // Is this the first node?
-        if(*product_list == NULL) {
-            *product_list = new_product;
-        } else {
+        if(*product_list) {
             aux = *product_list;
             while(aux -> next) {
                 aux = aux -> next;
             }
             aux -> next = new_product;
+        } else {
+            *product_list = new_product;
         }
+
     }
 
 }
 
-int validate_code_existence(Product **product_list, int prev_code) {
+int validate_code_existence(Product **product_list, int ref_code) {
 
     Product *current = *product_list;
     int found_element = 0;
 
     while(current != NULL) {
-        if (current -> code == prev_code) {
+        if (current -> code == ref_code) {
             found_element++;
         }
         current = current -> next;
     }
 
     if(found_element) {
-        printf("\n-> Code found successfully!\n\n");
+        printf("\n-> Code found successfully!\n");
         return 0;
     } else {
-        printf("\n-> The specified code doesn't exist on the list yet. Firstly, insert an element with this code...\n");
+        printf("\n\n-> Code inexistent on the list!\n");
         return 1;
     }
 
 }
 
-void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int prev_code) {
+void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int ref_code) {
 
     int func_return = insertion_validation(product_list, code, name, amount);
 
     if(func_return == 2) {
 
+        Product *aux = *product_list, *new_product = (Product *)malloc(sizeof(Product));
+
+        if(new_product == NULL) {
+            puts("\n-> Memory allocation failed.");
+            return;
+        }
+
+        new_product -> code = code;
+        strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
+        new_product -> name[sizeof(new_product -> name) - 1] = '\0';
+        new_product -> amount = amount;
+
+        while(aux -> code != ref_code) {
+            aux = aux -> next;
+        }
+
+        new_product -> next = aux -> next;
+        aux -> next = new_product;
+        
+    }
+
+}
+
+void insert_sorted(Product **product_list, int code, char name[], int amount) {
+
+    int func_return = insertion_validation(product_list, code, name, amount);
+
+    if(func_return == 2) {
+    
         Product *aux, *new_product = (Product *)malloc(sizeof(Product));
 
         if(new_product == NULL) {
@@ -200,103 +232,64 @@ void insert_at_the_middle(Product **product_list, int code, char name[], int amo
         new_product -> name[sizeof(new_product -> name) - 1] = '\0';
         new_product -> amount = amount;
 
-        // Is this the first node?
         if(*product_list == NULL) {
             new_product -> next = NULL;
             *product_list = new_product;
+        }
+        else if(new_product -> code < (*product_list) -> code) {
+            new_product -> next = *product_list;
+            *product_list = new_product;
         } else {
             aux = *product_list;
-            while(aux -> code != prev_code && aux -> next) {
+            while(aux -> next && new_product -> code > aux -> next -> code){
                 aux = aux -> next;
             }
             new_product -> next = aux -> next;
             aux -> next = new_product;
         }
-
     }
 
 }
 
-void insert_sorted(Product **product_list, int code, char name[], int amount) {
+void remove_element(Product **product_list, int code, int amount) {
 
-    Product *current = *product_list;
+    Product *aux, *node_removed;
 
-    while (current != NULL) {
-        if (current -> code == code) {
-            current -> amount++;
-            return;
+    if((*product_list) -> code == code) {
+        
+        node_removed = *product_list;
+
+        if(node_removed -> amount == amount) {
+            *product_list = node_removed -> next;
+            printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
+            free(node_removed);
+        } else {
+            node_removed -> amount = node_removed -> amount - amount;
+            printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
         }
-        current = current -> next;
-    }
 
-    Product *aux, *new_product = (Product *)malloc(sizeof(Product));
-
-    if(new_product == NULL) {
-        puts("\n-> Memory allocation failed.");
-        return;
-    }
-
-    new_product -> code = code;
-    strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
-    new_product -> name[sizeof(new_product -> name) - 1] = '\0';
-    new_product -> amount = amount;
-
-    // Is the list empty?
-    if(*product_list == NULL) {
-        new_product -> next = NULL;
-        *product_list = new_product;
-    } // Is the element the smallest?
-    else if(new_product -> code < (*product_list) -> code) {
-        new_product -> next = *product_list;
-        *product_list = new_product;
     } else {
+
         aux = *product_list;
-        while(aux -> next && new_product -> code > aux -> next -> code){
+
+        while(aux -> next && aux -> next -> code != code) {
             aux = aux -> next;
         }
-        new_product -> next = aux -> next;
-        aux -> next = new_product;
-    }
 
-}
+        if(aux -> next) {
+            node_removed = aux -> next;
 
-void remove_element(Product **product_list, int code) {
-
-    Product *aux, *node_removed = NULL;
-
-    if(*product_list) {
-        if((*product_list) -> code == code) {
-            if((*product_list) -> amount > 1) {
-                (*product_list) -> amount--;
-                printf("\n-> Element removed successfully (Code: %d)\n", (*product_list) -> code);
-            } else {
-                node_removed = *product_list;
-                *product_list = node_removed -> next;
-                printf("\n-> Element removed successfully (Code: %d)\n", node_removed -> code);
+            if(node_removed -> amount == amount) {
+                aux -> next = node_removed -> next;
+                printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
                 free(node_removed);
-            }
-        } else {
-            aux = *product_list;
-
-            while(aux -> next && aux -> next -> code != code) {
-                aux = aux -> next;
+            } else {
+                node_removed -> amount = node_removed -> amount - amount;
+                printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
             }
 
-            if(aux -> next) {
-                if(aux -> next -> amount > 1) {
-                    aux -> next -> amount--;
-                    printf("\n-> Element removed successfully (Code: %d)\n", aux -> next -> code);
-                } else {
-                    node_removed = aux -> next;
-                    aux -> next = node_removed -> next;
-                    printf("\n-> Element removed successfully (Code: %d)\n", node_removed -> code);
-                    free(node_removed);
-                }
-            }
-            else {
-                printf("\n-> Element's code not found!\n");
-            }
         }
+
     }
 
 }
