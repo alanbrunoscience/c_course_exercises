@@ -17,8 +17,9 @@ int main() {
         printf("4 - Insert sorted;\n");
         printf("5 - Remove element;\n");
         printf("6 - Search element;\n");
-        printf("7 - Print list;\n");
-        printf("8 - Finish the program.\n\n-> ");
+        printf("7 - Update element;\n");
+        printf("8 - Print list;\n");
+        printf("9 - Finish the program.\n\n-> ");
         scanf("%d", &option);
 
         switch(option) {
@@ -187,6 +188,11 @@ int main() {
             
             case 6:
 
+                if(product_list == NULL) {
+                    printf("\n-> The product's list is empty!\n");
+                    break;
+                }
+
                 printf("\n- Enter the code to be searched: ");
                 scanf("%d", &code);
 
@@ -205,13 +211,63 @@ int main() {
 
             case 7:
 
+                if(product_list == NULL) {
+                    printf("\n-> The product's list is empty!\n");
+                    break;
+                }
+
+                printf("\n*** CODE TO BE UPDATED ***\n\n");
+            
+                printf("1) Enter the code to be updated: ");
+                scanf("%d", &code);
+
+                while(code < 0) {
+                    printf("\n-> Invalid code! Enter a code greater or equal to 0: ");
+                    scanf("%d", &code);
+                }
+
+                int code_existence = validate_code_existence(&product_list, code);
+
+                if(code_existence == 0) {
+
+                    search_node = search_element(&product_list, code);
+
+                    printf("\n\n*** ELEMENT INFO ***\n\n");
+                    printf("-> Code: %d;\n", search_node -> code);
+                    printf("-> Name: %s;\n", search_node -> name);
+                    printf("-> Amount: %d;\n", search_node -> amount);
+
+                    printf("\n\n*** NEW PRODUCT DATA ***\n\n");
+                    printf("1) Product name: ");
+                    scanf(" %[^\n]", name);
+                    printf("\n2) Amount: ");
+                    scanf("%d", &amount);
+
+                    while(amount <= 0) {
+                        printf("\n-> Invalid amount! Enter an amount greater than 0: ");
+                        scanf("%d", &amount);
+                    }
+
+                    update_existing_item(&product_list, code, name, amount);
+
+                }
+
+                break;
+
+            case 8:
+
+                if(product_list == NULL) {
+                    printf("\n-> The product's list is empty!\n");
+                    break;
+                }
+
                 print_list(product_list);
 
                 break;
 
             default:
 
-                if(option != 8) {
+                if(option != 9) {
                     printf("\n-> Invalid option!\n");
                 }
 
@@ -219,7 +275,7 @@ int main() {
 
         printf("\n\n");
 
-    } while(option != 8);
+    } while(option != 9);
 
     printf("Finishing the program...\n");
 

@@ -7,7 +7,7 @@ int update_elem_dif_names(Product *current, char name[], int amount) {
 
     int yes_no;
 
-    printf("\n-> The element already exists on the list, but the names are different! Are you sure that you want to overwrite this product? (1 - Yes / 2 - No): ");
+    printf("\n-> The names are different! Do you want to overwrite this product? (1 - Yes / 2 - No): ");
     scanf("%d", &yes_no);
 
     while(yes_no != 1 && yes_no != 2) {
@@ -16,13 +16,18 @@ int update_elem_dif_names(Product *current, char name[], int amount) {
     }
 
     if(yes_no == 1) {
+
         strncpy(current -> name, name, sizeof(current -> name) - 1); // Copy name
         current -> name[sizeof(current -> name) - 1] = '\0'; // Ensure null-termination
         current -> amount = amount;
 
+        printf("\n-> Updating item information...\n");
+
         return 0;
 
     } else {
+
+        printf("\n-> Discarding changes...\n");
 
         return 1;
 
@@ -34,7 +39,7 @@ int update_elem_same_names(Product *current, int amount) {
 
     int yes_no, amount_update;
 
-    printf("\n-> The element already exists on the list, but the names are the same! Do you want to update item information? (1 - Yes / 2 - No): ");
+    printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No): ");
     scanf("%d", &yes_no);
 
     while(yes_no != 1 && yes_no != 2) {
@@ -53,19 +58,24 @@ int update_elem_same_names(Product *current, int amount) {
 
         if(amount_update == 1) {
             current -> amount = current -> amount + amount;
+            printf("\n-> Incrementing the amount...\n");
             return 0;
         } else {
+            printf("\n-> Overwriting the amount to the new value inserted...\n");
             current -> amount = amount;
             return 0;
         }
 
-    } else
+    } else {
+
+        printf("\n-> Discarding changes...\n");
 
         return 1;
+    }
 
 }
 
-int insertion_validation(Product **product_list, int code, char name[], int amount) {
+int update_existing_item(Product **product_list, int code, char name[], int amount) {
 
     Product *current = *product_list;
 
@@ -80,10 +90,6 @@ int insertion_validation(Product **product_list, int code, char name[], int amou
             } else {
 
                 int result = update_elem_same_names(current, amount);
-
-                if(result == 0) {
-                    printf("\n-> Updating item information...\n");
-                }
 
                 return result;
                 
@@ -100,7 +106,7 @@ int insertion_validation(Product **product_list, int code, char name[], int amou
 
 void insert_at_the_beginning(Product **product_list, int code, char name[], int amount) {
 
-    int func_return = insertion_validation(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, amount);
 
     if(func_return == 2) {
         // Create a new node
@@ -131,7 +137,7 @@ void insert_at_the_beginning(Product **product_list, int code, char name[], int 
 
 void insert_at_the_end(Product **product_list, int code, char name[], int amount) {
 
-    int func_return = insertion_validation(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, amount);
 
     if(func_return == 2) {
 
@@ -187,7 +193,7 @@ int validate_code_existence(Product **product_list, int ref_code) {
 
 void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int ref_code) {
 
-    int func_return = insertion_validation(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, amount);
 
     if(func_return == 2) {
 
@@ -216,7 +222,7 @@ void insert_at_the_middle(Product **product_list, int code, char name[], int amo
 
 void insert_sorted(Product **product_list, int code, char name[], int amount) {
 
-    int func_return = insertion_validation(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, amount);
 
     if(func_return == 2) {
     
@@ -319,25 +325,24 @@ Product* search_element(Product **product_list, int code) {
 
 void print_list(Product *product_list) {
 
-    if(product_list == NULL) {
-        printf("\n-> The product's list is empty!\n");
-    } else {
-        printf("\n*** PRODUCTS ***\n\n");
-        while(product_list) {
+    
+    printf("\n*** PRODUCTS ***\n\n");
 
-            printf("- Code: %d;\n", product_list -> code);
-            printf("- Name: %s;\n", product_list -> name);
-            printf("- Total quantity in stock: %d;\n\n", product_list -> amount);
+    while(product_list) {
 
-            product_list = product_list -> next;
+        printf("- Code: %d;\n", product_list -> code);
+        printf("- Name: %s;\n", product_list -> name);
+        printf("- Total quantity in stock: %d;\n\n", product_list -> amount);
 
-        }
+        product_list = product_list -> next;
+
     }
+    
 }
 
 void free_memory(Product *product_list) {
-    Product *current = product_list;
-    Product *next;
+
+    Product *current = product_list, *next;
 
     while (current != NULL) {
         next = current -> next;
