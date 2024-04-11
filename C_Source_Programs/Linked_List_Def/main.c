@@ -169,9 +169,9 @@ int main() {
                     search_node = search_element(&product_list, code);
 
                     printf("\n*** ELEMENT INFO ***\n\n");
-                    printf("-> Code: %d;\n", search_node -> code);
-                    printf("-> Name: %s;\n", search_node -> name);
-                    printf("-> Amount: %d;\n", search_node -> amount);
+                    printf("-> Code: %d\n", search_node -> code);
+                    printf("-> Name: %s\n", search_node -> name);
+                    printf("-> Amount: %d\n", search_node -> amount);
 
                     printf("\n2) How many quantities of this product would you like to remove? ");
                     scanf("%d", &amount);
@@ -200,9 +200,9 @@ int main() {
                 
                 if(search_node) {
                     printf("\n*** ELEMENT FOUND INFO ***\n\n");
-                    printf("-> Code: %d;\n", search_node -> code);
-                    printf("-> Name: %s;\n", search_node -> name);
-                    printf("-> Amount: %d;\n", search_node -> amount);
+                    printf("-> Code: %d\n", search_node -> code);
+                    printf("-> Name: %s\n", search_node -> name);
+                    printf("-> Amount: %d\n", search_node -> amount);
                 } else {
                     printf("\n-> Element not found!\n");
                 }
@@ -233,9 +233,9 @@ int main() {
                     search_node = search_element(&product_list, code);
 
                     printf("\n\n*** ELEMENT INFO ***\n\n");
-                    printf("-> Code: %d;\n", search_node -> code);
-                    printf("-> Name: %s;\n", search_node -> name);
-                    printf("-> Amount: %d;\n", search_node -> amount);
+                    printf("-> Code: %d\n", search_node -> code);
+                    printf("-> Name: %s\n", search_node -> name);
+                    printf("-> Amount: %d\n", search_node -> amount);
 
                     printf("\n\n*** NEW PRODUCT DATA ***\n\n");
                     printf("1) Product name: ");

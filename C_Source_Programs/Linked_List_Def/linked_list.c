@@ -330,9 +330,9 @@ void print_list(Product *product_list) {
 
     while(product_list) {
 
-        printf("- Code: %d;\n", product_list -> code);
-        printf("- Name: %s;\n", product_list -> name);
-        printf("- Total quantity in stock: %d;\n\n", product_list -> amount);
+        printf("- Code: %d\n", product_list -> code);
+        printf("- Name: %s\n", product_list -> name);
+        printf("- Total quantity in stock: %d\n\n", product_list -> amount);
 
         product_list = product_list -> next;
 
