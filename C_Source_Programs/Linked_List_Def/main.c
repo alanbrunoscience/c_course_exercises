@@ -6,7 +6,7 @@
 int main() {
 
     Product *product_list = NULL, *search_node;
-    int option, code, amount, ref_code;
+    int option, code, quantity, ref_code;
     char name[40];
 
     do {
@@ -37,15 +37,15 @@ int main() {
 
                 printf("\n2) Product name: ");
                 scanf(" %[^\n]", name);
-                printf("\n3) Amount: ");
-                scanf("%d", &amount);
+                printf("\n3) Quantity: ");
+                scanf("%d", &quantity);
 
-                while(amount <= 0) {
-                    printf("\n-> Invalid amount! Enter an amount greater than 0: ");
-                    scanf("%d", &amount);
+                while(quantity <= 0) {
+                    printf("\n-> Invalid quantity! Enter a quantity greater than 0: ");
+                    scanf("%d", &quantity);
                 }
 
-                insert_at_the_beginning(&product_list, code, name, amount);
+                insert_at_the_beginning(&product_list, code, name, quantity);
 
                 break;
 
@@ -62,15 +62,15 @@ int main() {
 
                 printf("\n2) Product name: ");
                 scanf(" %[^\n]", name);
-                printf("\n3) Amount: ");
-                scanf("%d", &amount);
+                printf("\n3) Quantity: ");
+                scanf("%d", &quantity);
 
-                while(amount <= 0) {
-                    printf("\n-> Invalid amount! Enter an amount greater than 0: ");
-                    scanf("%d", &amount);
+                while(quantity <= 0) {
+                    printf("\n-> Invalid quantity! Enter a quantity greater than 0: ");
+                    scanf("%d", &quantity);
                 }
 
-                insert_at_the_end(&product_list, code, name, amount);
+                insert_at_the_end(&product_list, code, name, quantity);
 
                 break;
 
@@ -106,15 +106,15 @@ int main() {
 
                     printf("\n2) Product name: ");
                     scanf(" %[^\n]", name);
-                    printf("\n3) Amount: ");
-                    scanf("%d", &amount);
+                    printf("\n3) Quantity: ");
+                    scanf("%d", &quantity);
 
-                    while(amount <= 0) {
-                        printf("\n-> Invalid amount! Enter an amount greater than 0: ");
-                        scanf("%d", &amount);
+                    while(quantity <= 0) {
+                        printf("\n-> Invalid quantity! Enter a quantity greater than 0: ");
+                        scanf("%d", &quantity);
                     }
 
-                    insert_at_the_middle(&product_list, code, name, amount, ref_code);
+                    insert_at_the_middle(&product_list, code, name, quantity, ref_code);
 
                 }           
 
@@ -133,15 +133,15 @@ int main() {
 
                 printf("\n2) Product name: ");
                 scanf(" %[^\n]", name);
-                printf("\n3) Amount: ");
-                scanf("%d", &amount);
+                printf("\n3) Quantity: ");
+                scanf("%d", &quantity);
 
-                while(amount <= 0) {
-                    printf("\n-> Invalid amount! Enter an amount greater than 0: ");
-                    scanf("%d", &amount);
+                while(quantity <= 0) {
+                    printf("\n-> Invalid quantity! Enter a quantity greater than 0: ");
+                    scanf("%d", &quantity);
                 }
 
-                insert_sorted(&product_list, code, name, amount);
+                insert_sorted(&product_list, code, name, quantity);
 
                 break;
 
@@ -171,17 +171,17 @@ int main() {
                     printf("\n*** ELEMENT INFO ***\n\n");
                     printf("-> Code: %d\n", search_node -> code);
                     printf("-> Name: %s\n", search_node -> name);
-                    printf("-> Amount: %d\n", search_node -> amount);
+                    printf("-> Quantity: %d\n", search_node -> quantity);
 
                     printf("\n2) How many quantities of this product would you like to remove? ");
-                    scanf("%d", &amount);
+                    scanf("%d", &quantity);
 
-                    while(amount <= 0 || amount > search_node -> amount) {
-                        printf("\n-> Invalid amount! Enter an amount greater than 0 and less than or equal to %d: ", search_node -> amount);
-                        scanf("%d", &amount);
+                    while(quantity <= 0 || quantity > search_node -> quantity) {
+                        printf("\n-> Invalid quantity! Enter a quantity greater than 0 and less than or equal to %d: ", search_node -> quantity);
+                        scanf("%d", &quantity);
                     }
 
-                    remove_element(&product_list, code, amount);
+                    remove_element(&product_list, code, quantity);
                 }
 
                 break;
@@ -202,7 +202,7 @@ int main() {
                     printf("\n*** ELEMENT FOUND INFO ***\n\n");
                     printf("-> Code: %d\n", search_node -> code);
                     printf("-> Name: %s\n", search_node -> name);
-                    printf("-> Amount: %d\n", search_node -> amount);
+                    printf("-> Quantity: %d\n", search_node -> quantity);
                 } else {
                     printf("\n-> Element not found!\n");
                 }
@@ -235,20 +235,20 @@ int main() {
                     printf("\n\n*** ELEMENT INFO ***\n\n");
                     printf("-> Code: %d\n", search_node -> code);
                     printf("-> Name: %s\n", search_node -> name);
-                    printf("-> Amount: %d\n", search_node -> amount);
+                    printf("-> Quantity: %d\n", search_node -> quantity);
 
                     printf("\n\n*** NEW PRODUCT DATA ***\n\n");
                     printf("1) Product name: ");
                     scanf(" %[^\n]", name);
-                    printf("\n2) Amount: ");
-                    scanf("%d", &amount);
+                    printf("\n2) Quantity: ");
+                    scanf("%d", &quantity);
 
-                    while(amount <= 0) {
-                        printf("\n-> Invalid amount! Enter an amount greater than 0: ");
-                        scanf("%d", &amount);
+                    while(quantity <= 0) {
+                        printf("\n-> Invalid quantity! Enter a quantity greater than 0: ");
+                        scanf("%d", &quantity);
                     }
 
-                    update_existing_item(&product_list, code, name, amount);
+                    update_existing_item(&product_list, code, name, quantity);
 
                 }
 

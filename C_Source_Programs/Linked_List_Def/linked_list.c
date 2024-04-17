@@ -3,7 +3,7 @@
 #include <string.h>
 #include "linked_list.h"
 
-int update_elem_dif_names(Product *current, char name[], int amount) {
+int update_elem_dif_names(Product *current, char name[], int quantity) {
 
     int yes_no;
 
@@ -19,7 +19,7 @@ int update_elem_dif_names(Product *current, char name[], int amount) {
 
         strncpy(current -> name, name, sizeof(current -> name) - 1); // Copy name
         current -> name[sizeof(current -> name) - 1] = '\0'; // Ensure null-termination
-        current -> amount = amount;
+        current -> quantity = quantity;
 
         printf("\n-> Updating item information...\n");
 
@@ -35,9 +35,9 @@ int update_elem_dif_names(Product *current, char name[], int amount) {
 
 }
 
-int update_elem_same_names(Product *current, int amount) {
+int update_elem_same_names(Product *current, int quantity) {
 
-    int yes_no, amount_update;
+    int yes_no, quantity_update;
 
     printf("\n-> The names are the same! Do you want to update item information? (1 - Yes / 2 - No): ");
     scanf("%d", &yes_no);
@@ -48,21 +48,21 @@ int update_elem_same_names(Product *current, int amount) {
     }
 
     if(yes_no == 1) {
-        printf("\n-> Would you like to increase the amount or only update it? Press '1' to increment the amount or '2' to only update it: ");
-        scanf("%d", &amount_update);
+        printf("\n-> Would you like to increase the quantity or only update it? Press '1' to increment the quantity or '2' to only update it: ");
+        scanf("%d", &quantity_update);
 
-        while(amount_update != 1 && amount_update != 2) {
+        while(quantity_update != 1 && quantity_update != 2) {
             printf("\n-> Invalid option! Choose 1 or 2, please: ");
-            scanf("%d", &amount_update);
+            scanf("%d", &quantity_update);
         }
 
-        if(amount_update == 1) {
-            current -> amount = current -> amount + amount;
-            printf("\n-> Incrementing the amount...\n");
+        if(quantity_update == 1) {
+            current -> quantity = current -> quantity + quantity;
+            printf("\n-> Incrementing the quantity...\n");
             return 0;
         } else {
-            printf("\n-> Overwriting the amount to the new value inserted...\n");
-            current -> amount = amount;
+            printf("\n-> Overwriting the quantity to the new value inserted...\n");
+            current -> quantity = quantity;
             return 0;
         }
 
@@ -75,7 +75,7 @@ int update_elem_same_names(Product *current, int amount) {
 
 }
 
-int update_existing_item(Product **product_list, int code, char name[], int amount) {
+int update_existing_item(Product **product_list, int code, char name[], int quantity) {
 
     Product *current = *product_list;
 
@@ -83,13 +83,13 @@ int update_existing_item(Product **product_list, int code, char name[], int amou
         if (current -> code == code) {
             if (strcmp(current -> name, name) != 0) {
 
-                int result = update_elem_dif_names(current, name, amount);
+                int result = update_elem_dif_names(current, name, quantity);
 
                 return result;
 
             } else {
 
-                int result = update_elem_same_names(current, amount);
+                int result = update_elem_same_names(current, quantity);
 
                 return result;
                 
@@ -104,9 +104,9 @@ int update_existing_item(Product **product_list, int code, char name[], int amou
 
 }
 
-void insert_at_the_beginning(Product **product_list, int code, char name[], int amount) {
+void insert_at_the_beginning(Product **product_list, int code, char name[], int quantity) {
 
-    int func_return = update_existing_item(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, quantity);
 
     if(func_return == 2) {
         // Create a new node
@@ -121,7 +121,7 @@ void insert_at_the_beginning(Product **product_list, int code, char name[], int 
         new_product -> code = code;
         strncpy(new_product -> name, name, sizeof(new_product -> name) - 1); // Copy name
         new_product -> name[sizeof(new_product -> name) - 1] = '\0'; // Ensure null-termination
-        new_product -> amount = amount;
+        new_product -> quantity = quantity;
 
         if(*product_list) {
             new_product -> next = *product_list;
@@ -135,9 +135,9 @@ void insert_at_the_beginning(Product **product_list, int code, char name[], int 
 
 }
 
-void insert_at_the_end(Product **product_list, int code, char name[], int amount) {
+void insert_at_the_end(Product **product_list, int code, char name[], int quantity) {
 
-    int func_return = update_existing_item(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, quantity);
 
     if(func_return == 2) {
 
@@ -151,7 +151,7 @@ void insert_at_the_end(Product **product_list, int code, char name[], int amount
         new_product -> code = code;
         strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
         new_product -> name[sizeof(new_product -> name) - 1] = '\0';
-        new_product -> amount = amount;
+        new_product -> quantity = quantity;
 
         new_product -> next = NULL;
 
@@ -191,9 +191,9 @@ int validate_code_existence(Product **product_list, int ref_code) {
 
 }
 
-void insert_at_the_middle(Product **product_list, int code, char name[], int amount, int ref_code) {
+void insert_at_the_middle(Product **product_list, int code, char name[], int quantity, int ref_code) {
 
-    int func_return = update_existing_item(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, quantity);
 
     if(func_return == 2) {
 
@@ -207,7 +207,7 @@ void insert_at_the_middle(Product **product_list, int code, char name[], int amo
         new_product -> code = code;
         strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
         new_product -> name[sizeof(new_product -> name) - 1] = '\0';
-        new_product -> amount = amount;
+        new_product -> quantity = quantity;
 
         while(aux -> code != ref_code) {
             aux = aux -> next;
@@ -220,9 +220,9 @@ void insert_at_the_middle(Product **product_list, int code, char name[], int amo
 
 }
 
-void insert_sorted(Product **product_list, int code, char name[], int amount) {
+void insert_sorted(Product **product_list, int code, char name[], int quantity) {
 
-    int func_return = update_existing_item(product_list, code, name, amount);
+    int func_return = update_existing_item(product_list, code, name, quantity);
 
     if(func_return == 2) {
     
@@ -236,7 +236,7 @@ void insert_sorted(Product **product_list, int code, char name[], int amount) {
         new_product -> code = code;
         strncpy(new_product -> name, name, sizeof(new_product -> name) - 1);
         new_product -> name[sizeof(new_product -> name) - 1] = '\0';
-        new_product -> amount = amount;
+        new_product -> quantity = quantity;
 
         if(*product_list == NULL) {
 
@@ -265,7 +265,7 @@ void insert_sorted(Product **product_list, int code, char name[], int amount) {
 
 }
 
-void remove_element(Product **product_list, int code, int amount) {
+void remove_element(Product **product_list, int code, int quantity) {
 
     Product *aux, *node_removed;
 
@@ -273,13 +273,13 @@ void remove_element(Product **product_list, int code, int amount) {
         
         node_removed = *product_list;
 
-        if(node_removed -> amount == amount) {
+        if(node_removed -> quantity == quantity) {
             *product_list = node_removed -> next;
             printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
             free(node_removed);
         } else {
-            node_removed -> amount = node_removed -> amount - amount;
-            printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
+            node_removed -> quantity = node_removed -> quantity - quantity;
+            printf("\n-> Element's quantity updated to %d.\n", node_removed -> quantity);
         }
 
     } else {
@@ -292,13 +292,13 @@ void remove_element(Product **product_list, int code, int amount) {
 
         node_removed = aux -> next;
 
-        if(node_removed -> amount == amount) {
+        if(node_removed -> quantity == quantity) {
             aux -> next = node_removed -> next;
             printf("\n-> Element completely removed - Code %d.\n", node_removed -> code);
             free(node_removed);
         } else {
-            node_removed -> amount = node_removed -> amount - amount;
-            printf("\n-> Element's amount updated to %d.\n", node_removed -> amount);
+            node_removed -> quantity = node_removed -> quantity - quantity;
+            printf("\n-> Element's quantity updated to %d.\n", node_removed -> quantity);
         }
 
     }
@@ -332,7 +332,7 @@ void print_list(Product *product_list) {
 
         printf("- Code: %d\n", product_list -> code);
         printf("- Name: %s\n", product_list -> name);
-        printf("- Total quantity in stock: %d\n\n", product_list -> amount);
+        printf("- Total quantity in stock: %d\n\n", product_list -> quantity);
 
         product_list = product_list -> next;
 
