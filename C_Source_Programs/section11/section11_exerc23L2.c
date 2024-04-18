@@ -39,7 +39,6 @@ int main() {
 void data_input_info(int *number_emp, char filename[], Employees_info employees[]) {
 
     FILE *fptr;
-    
 
     if((fptr = fopen(filename, "w")) == NULL) {
         puts("\n-> Unable to create the file. Finishing the program...");
