@@ -8,7 +8,7 @@ typedef struct Product {
 
 } Product;
 
-// Function prototypes
+// Functions prototype
 int update_elem_dif_names(Product *current, char name[], int quantity);
 int update_elem_same_names(Product *current, int quantity);
 int update_existing_item(Product **product_list, int code, char name[], int quantity);

@@ -1,121 +1,168 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
+#include <ctype.h>
+#include <wctype.h>
+#include <locale.h>
 #include "contact_list.h"
 
-// Function to initialize the array of linked lists
-// void initialize_lists(Contact* contact_list[]) {
-//     for (int i = 0; i < 26; i++) {
-//         contact_list[i] = NULL;
-//     }
-// }
+#define MAX_NAME_LENGTH 40
 
-void name_formatter(char name[]) {
-    // Convert first character to uppercase if it's lowercase
-    if (name[0] >= 'a' && name[0] <= 'z') {
-        name[0] -= 32;
-    } else if (strcmp(&name[0], "ä") == 0) {
-        strcpy(&name[0], "Ä");
-    } else if (strcmp(&name[0], "á") == 0) {
-        strcpy(&name[0], "Á");
-    } else if (strcmp(&name[0], "à") == 0) {
-        strcpy(&name[0], "À");
-    } else if (strcmp(&name[0], "â") == 0) {
-        strcpy(&name[0], "Â");
-    } else if (strcmp(&name[0], "ã") == 0) {
-        strcpy(&name[0], "Ã");
-    } else if (strcmp(&name[0], "ç") == 0) {
-        strcpy(&name[0], "Ç");
-    } else if (strcmp(&name[0], "é") == 0) {
-        strcpy(&name[0], "É");
-    } else if (strcmp(&name[0], "ê") == 0) {
-        strcpy(&name[0], "Ê");
-    } else if (strcmp(&name[0], "ë") == 0) {
-        strcpy(&name[0], "Ë");
-    } else if (strcmp(&name[0], "è") == 0) {
-        strcpy(&name[0], "È");
-    } else if (strcmp(&name[0], "í") == 0) {
-        strcpy(&name[0], "Í");
-    } else if (strcmp(&name[0], "î") == 0) {
-        strcpy(&name[0], "Î");
-    } else if (strcmp(&name[0], "ï") == 0) {
-        strcpy(&name[0], "Ï");
-    } else if (strcmp(&name[0], "ì") == 0) {
-        strcpy(&name[0], "Ì");
-    } else if (strcmp(&name[0], "ñ") == 0) {
-        strcpy(&name[0], "Ñ");
-    } else if (strcmp(&name[0], "ö") == 0) {
-        strcpy(&name[0], "Ö");
-    } else if (strcmp(&name[0], "ó") == 0) {
-        strcpy(&name[0], "Ó");
-    } else if (strcmp(&name[0], "ô") == 0) {
-        strcpy(&name[0], "Ô");
-    } else if (strcmp(&name[0], "ò") == 0) {
-        strcpy(&name[0], "Ò");
-    } else if (strcmp(&name[0], "ü") == 0) {
-        strcpy(&name[0], "Ü");
-    } else if (strcmp(&name[0], "ú") == 0) {
-        strcpy(&name[0], "Ú");
-    } else if (strcmp(&name[0], "û") == 0) {
-        strcpy(&name[0], "Û");
-    } else if (strcmp(&name[0], "ù") == 0) {
-        strcpy(&name[0], "Ù");
-    } else if (strcmp(&name[0], "ý") == 0) {
-        strcpy(&name[0], "Ý");
+void initialize_lists(Node* contact_list[]) {
+  for (size_t i = 0; i < 27; i++) {
+    contact_list[i] = NULL;
+  }
+}
+
+void format_name_variable(wchar_t name[], size_t* total_length) {
+
+  wchar_t str[MAX_NAME_LENGTH];
+  wcscpy(str, name);
+  const wchar_t delim[] = L" ,.!";
+  wchar_t* saveptr = NULL;
+  wchar_t* token = wcstok(str, delim, &saveptr);
+  
+  while (token != NULL) {
+    *total_length += (wcslen(token) + 1);
+    token = wcstok(NULL, delim, &saveptr);
+  }
+
+  wcscpy(str, name);
+  saveptr = NULL;
+  token = wcstok(str, delim, &saveptr);
+
+  name[0] = L'\0';
+
+  while (token != NULL) {
+    for (size_t i = 0; token[i] != L'\0'; i++) {
+      if (i == 0) {
+        token[0] = towupper(token[0]);
+      } else {
+        token[i] = towlower(token[i]);
+      }
     }
 
-    // Convert remaining characters to lowercase if they are uppercase
-    for (int i = 1; name[i] != '\0'; i++) {
-        if (name[i] >= 'A' && name[i] <= 'Z') {
-            name[i] += 32;
-        } else if (strcmp(&name[i], "Ä") == 0) {
-            strcpy(&name[i], "ä");
-        } else if (strcmp(&name[i], "Á") == 0) {
-            strcpy(&name[i], "á");
-        } else if (strcmp(&name[i], "À") == 0) {
-            strcpy(&name[i], "à");
-        } else if (strcmp(&name[i], "Â") == 0) {
-            strcpy(&name[i], "â");
-        } else if (strcmp(&name[i], "Ã") == 0) {
-            strcpy(&name[i], "ã");
-        } else if (strcmp(&name[i], "Ç") == 0) {
-            strcpy(&name[i], "ç");
-        } else if (strcmp(&name[i], "É") == 0) {
-            strcpy(&name[i], "é");
-        } else if (strcmp(&name[i], "Ê") == 0) {
-            strcpy(&name[i], "ê");
-        } else if (strcmp(&name[i], "Ë") == 0) {
-            strcpy(&name[i], "ë");
-        } else if (strcmp(&name[i], "È") == 0) {
-            strcpy(&name[i], "è");
-        } else if (strcmp(&name[i], "Í") == 0) {
-            strcpy(&name[i], "í");
-        } else if (strcmp(&name[i], "Î") == 0) {
-            strcpy(&name[i], "î");
-        } else if (strcmp(&name[i], "Ï") == 0) {
-            strcpy(&name[i], "ï");
-        } else if (strcmp(&name[i], "Ì") == 0) {
-            strcpy(&name[i], "ì");
-        } else if (strcmp(&name[i], "Ñ") == 0) {
-            strcpy(&name[i], "ñ");
-        } else if (strcmp(&name[i], "Ö") == 0) {
-            strcpy(&name[i], "ö");
-        } else if (strcmp(&name[i], "Ó") == 0) {
-            strcpy(&name[i], "ó");
-        } else if (strcmp(&name[i], "Ô") == 0) {
-            strcpy(&name[i], "ô");
-        } else if (strcmp(&name[i], "Ò") == 0) {
-            strcpy(&name[i], "ò");
-        } else if (strcmp(&name[i], "Ü") == 0) {
-            strcpy(&name[i], "ü");
-        } else if (strcmp(&name[i], "Ú") == 0) {
-            strcpy(&name[i], "ú");
-        } else if (strcmp(&name[i], "Û") == 0) {
-            strcpy(&name[i], "û");
-        } else if (strcmp(&name[i], "Ù") == 0) {
-            strcpy(&name[i], "ù");
-        } else if (strcmp(&name[i], "Ý") == 0) {
-            strcpy(&name[i], "ý");
-        }
+    wcscat(name, token);
+    wcscat(name, L" ");
+    token = wcstok(NULL, delim, &saveptr);
+  }
+
+  if (wcslen(name) > 0) {
+    name[wcslen(name) - 1] = L'\0';
+  }
+
+}
+
+void create_full_name_variable(wchar_t** full_name, size_t total_length, wchar_t first_name[], wchar_t last_name[]) {
+
+  *full_name = (wchar_t *)malloc(total_length * sizeof(wchar_t));
+
+  if (*full_name == NULL) {
+    fwprintf(stderr, L"Memory allocation failed\n");
+    exit(1);
+  }
+
+  (*full_name)[0] = L'\0';
+  wcscpy(*full_name, first_name);
+  wcscat(*full_name, L" ");
+  wcscat(*full_name, last_name);
+
+}
+
+int get_index(wchar_t full_name[]) {
+
+  wchar_t first_letter = full_name[0];
+
+  if(first_letter == L'Ä' || first_letter == L'Á' || first_letter == L'À' || first_letter == L'Â' || first_letter == L'Ã') {
+    return 0;
+  } else if(first_letter == L'Ç') {
+    return 2;
+  } else if(first_letter == L'É' || first_letter == L'Ê' || first_letter == L'Ë' || first_letter == L'È') {
+    return 4;
+  } else if(first_letter == L'Í' || first_letter == L'Î' || first_letter == L'Ï' || first_letter == L'Ì') {
+    return 8;
+  } else if(first_letter == L'Ñ') {
+    return 13;
+  } else if(first_letter == L'Ö' || first_letter == L'Ó' || first_letter == L'Ô' || first_letter == L'Ò') {
+    return 14;
+  } else if(first_letter == L'Ü' || first_letter == L'Ú' || first_letter == L'Û' || first_letter == L'Ù') {
+    return 20;
+  } else if(first_letter == L'Ý') {
+    return 24;
+  } else if(first_letter >= 65 && first_letter <= 90) {
+    return (first_letter - L'A');
+  } else {
+    return 26; // Elements that deviate from the common standard for names
+  }
+
+}
+
+void insert_contact(Node** head, wchar_t* full_name) {
+
+  Node* new_node = create_node(full_name);
+
+  if(*head == NULL) {
+    *head = new_node;
+  } else {
+    Node* current = *head;
+    while(current -> next != NULL) {
+      current = current -> next;
     }
+    current -> next = new_node;
+  }
+
+}
+
+Node* create_node(wchar_t* full_name) {
+
+  size_t full_name_len = wcslen(full_name) + 1;
+  
+  Node* new_node = (Node*)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
+
+  if(new_node == NULL) {
+    fwprintf(stderr, L"Memory allocation failed\n");
+    free(full_name);
+    exit(1);
+  }
+
+  wcscpy(new_node -> full_name, full_name);
+  new_node -> next = NULL;
+
+  return new_node;
+
+}
+
+void print_list(Node* contact_list[]) {
+
+  wprintf(L"\n*** CONTACT LIST ***");
+  for (size_t i = 0; i < 27; i++) {
+
+    Node* current = contact_list[i];
+    
+    if(current != NULL) {
+      if(i <= 25) {
+        wprintf(L"\n\n%lc:\n\n", 'A' + i);
+      } else {
+        wprintf(L"\n\nNON-STANDARD NAMES:\n\n");
+      }
+      while(current != NULL) {
+        wprintf(L"- %ls\n", current -> full_name);
+        current = current -> next;
+      }
+      wprintf(L"\n-----------------------------");
+    }
+  }
+}
+
+void free_list(Node* head) {
+
+  Node* current = head;
+
+  while(current != NULL) {
+    Node* next = current -> next;
+    free(current);
+    current = next;
+  }
+
 }
