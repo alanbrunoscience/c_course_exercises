@@ -70,6 +70,28 @@ void create_full_name_variable(wchar_t** full_name, size_t total_length, wchar_t
 
 }
 
+int validate_phone_number(wchar_t phone_number[]) {
+
+  int count_valid_digits = 0;
+
+  for(size_t i = 0; phone_number[i] != '\0'; i++) {
+    if(phone_number[i] >= 48 && phone_number[i] <= 57) {
+      count_valid_digits++;
+    }
+  }
+
+  if(count_valid_digits == 11 && wcslen(phone_number) == 11) {
+    return 0;
+  } else {
+    return 1;
+  }
+
+}
+
+int is_leap_year(int year_of_birth) {
+  
+}
+
 int get_index(wchar_t full_name[]) {
 
   wchar_t first_letter = full_name[0];

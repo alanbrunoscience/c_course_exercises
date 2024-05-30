@@ -20,6 +20,10 @@ int main() {
   wchar_t first_name[MAX_NAME_LENGTH];
   wchar_t last_name[MAX_NAME_LENGTH];
   wchar_t *full_name = NULL;
+  wchar_t phone_number[13];
+  int year_of_birth;
+  // int month_of_birth;
+  // int day_of_birth;
   size_t total_length;
 
   Node* contact_list[27];
@@ -51,8 +55,26 @@ int main() {
         format_name_variable(last_name, &total_length);
         create_full_name_variable(&full_name, total_length, first_name, last_name);
 
-        int ret_index = get_index(full_name);
+        wprintf(L"3) Phone number (e.g.: (XX) X XXXX-XXXX)). Only digits, please: ");
+        wscanf(L" %l[^\n]", phone_number);
 
+        int validation_ret = validate_phone_number(phone_number);
+
+        while(validation_ret) {
+
+          wprintf(L"\n-> Invalid phone number! Enter only the digits, please (e.g.: (XX) X XXXX-XXXX)): ");
+          wscanf(L" %l[^\n]", phone_number);
+
+          validation_ret = validate_phone_number(phone_number);
+
+        }
+
+        wprintf(L"4) Year of birth: ");
+        wscanf(L" %ld", &year_of_birth);
+
+        wprintf(L"Year of birth: %ld\n", year_of_birth);
+
+        int ret_index = get_index(full_name);
         insert_contact(&contact_list[ret_index], full_name);
 
         free(full_name);
