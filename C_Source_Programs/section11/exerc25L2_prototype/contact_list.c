@@ -81,15 +81,37 @@ int validate_phone_number(wchar_t phone_number[]) {
   }
 
   if(count_valid_digits == 11 && wcslen(phone_number) == 11) {
+    return 1;
+  } else {
+    return 0;
+  }
+
+}
+
+int validate_leap_year(int year_of_birth) {
+  if((year_of_birth % 4 == 0 && year_of_birth % 100 != 0) || year_of_birth % 400 == 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int validate_day_of_birth(int is_leap_year, int month_of_birth, int day_of_birth) {
+
+  int months[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+  if(is_leap_year) {
+    months[1] = 29;
+  }
+
+  int index_month = month_of_birth - 1;
+
+  if(day_of_birth < 1 || day_of_birth > months[index_month]) {
     return 0;
   } else {
     return 1;
   }
 
-}
-
-int is_leap_year(int year_of_birth) {
-  
 }
 
 int get_index(wchar_t full_name[]) {

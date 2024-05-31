@@ -22,8 +22,8 @@ int main() {
   wchar_t *full_name = NULL;
   wchar_t phone_number[13];
   int year_of_birth;
-  // int month_of_birth;
-  // int day_of_birth;
+  int month_of_birth;
+  int day_of_birth;
   size_t total_length;
 
   Node* contact_list[27];
@@ -48,19 +48,19 @@ int main() {
         wprintf(L"1) First Name: ");
         wscanf(L" %l[^\n]", first_name);
 
-        wprintf(L"2) Last Name: ");
+        wprintf(L"\n2) Last Name: ");
         wscanf(L" %l[^\n]", last_name);
 
         format_name_variable(first_name, &total_length);
         format_name_variable(last_name, &total_length);
         create_full_name_variable(&full_name, total_length, first_name, last_name);
 
-        wprintf(L"3) Phone number (e.g.: (XX) X XXXX-XXXX)). Only digits, please: ");
+        wprintf(L"\n3) Phone number (e.g.: (XX) X XXXX-XXXX)). Only digits, please: ");
         wscanf(L" %l[^\n]", phone_number);
 
         int validation_ret = validate_phone_number(phone_number);
 
-        while(validation_ret) {
+        while(!validation_ret) {
 
           wprintf(L"\n-> Invalid phone number! Enter only the digits, please (e.g.: (XX) X XXXX-XXXX)): ");
           wscanf(L" %l[^\n]", phone_number);
@@ -69,10 +69,35 @@ int main() {
 
         }
 
-        wprintf(L"4) Year of birth: ");
+        wprintf(L"\n4) Year of birth: ");
         wscanf(L" %ld", &year_of_birth);
 
-        wprintf(L"Year of birth: %ld\n", year_of_birth);
+        while(year_of_birth < 1) {
+          wprintf(L"\n-> Invalid year! The year needs to be greater than 0. Enter the year again: ");
+          wscanf(L" %ld", &year_of_birth);
+        }
+
+        wprintf(L"\n5) Month of birth (1 - Jan, 2 - Feb, ..., 12 - Dec): ");
+        wscanf(L" %ld", &month_of_birth);
+
+        while(month_of_birth < 1 || month_of_birth > 12) {
+          wprintf(L"\n-> Invalid month! The month needs to be greater than 0 and smaller or equal to 12. Enter the month again: ");
+          wscanf(L" %ld", &month_of_birth);
+        }
+
+        wprintf(L"\n6) Day of birth: ");
+        wscanf(L" %ld", &day_of_birth);
+
+        int is_leap_year  = validate_leap_year(year_of_birth);
+
+        while(!validate_day_of_birth(is_leap_year, month_of_birth, day_of_birth)) {
+          wprintf(L"\n-> Invalid day for this month! Enter the day again: ");
+          wscanf(L" %ld", &day_of_birth);
+        }
+
+        wprintf(L"\nYear of birth: %ld\n", year_of_birth);
+        wprintf(L"\nMonth of birth: %ld\n", month_of_birth);
+        wprintf(L"\nDay of birth: %ld\n", day_of_birth);
 
         int ret_index = get_index(full_name);
         insert_contact(&contact_list[ret_index], full_name);
@@ -95,7 +120,7 @@ int main() {
 
     }
 
-    wprintf(L"\n\n");
+    wprintf(L"\n");
 
   } while (option != 3);
 
