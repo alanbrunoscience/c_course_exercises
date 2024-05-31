@@ -8,6 +8,7 @@
 #include "contact_list.h"
 
 #define MAX_NAME_LENGTH 40
+#define PHONE_NUMBER_LENGTH 13
 
 int main() {
 
@@ -20,7 +21,7 @@ int main() {
   wchar_t first_name[MAX_NAME_LENGTH];
   wchar_t last_name[MAX_NAME_LENGTH];
   wchar_t *full_name = NULL;
-  wchar_t phone_number[13];
+  wchar_t phone_number[PHONE_NUMBER_LENGTH];
   int year_of_birth;
   int month_of_birth;
   int day_of_birth;
@@ -94,13 +95,9 @@ int main() {
           wprintf(L"\n-> Invalid day for this month! Enter the day again: ");
           wscanf(L" %ld", &day_of_birth);
         }
-
-        wprintf(L"\nYear of birth: %ld\n", year_of_birth);
-        wprintf(L"\nMonth of birth: %ld\n", month_of_birth);
-        wprintf(L"\nDay of birth: %ld\n", day_of_birth);
-
+        
         int ret_index = get_index(full_name);
-        insert_contact(&contact_list[ret_index], full_name);
+        insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
         free(full_name);
 

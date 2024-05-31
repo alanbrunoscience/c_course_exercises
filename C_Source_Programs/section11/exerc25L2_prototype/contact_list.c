@@ -75,9 +75,11 @@ int validate_phone_number(wchar_t phone_number[]) {
   int count_valid_digits = 0;
 
   for(size_t i = 0; phone_number[i] != '\0'; i++) {
+    
     if(phone_number[i] >= 48 && phone_number[i] <= 57) {
       count_valid_digits++;
     }
+
   }
 
   if(count_valid_digits == 11 && wcslen(phone_number) == 11) {
@@ -142,9 +144,9 @@ int get_index(wchar_t full_name[]) {
 
 }
 
-void insert_contact(Node** head, wchar_t* full_name) {
+void insert_contact(Node** head, wchar_t* full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
-  Node* new_node = create_node(full_name);
+  Node* new_node = create_node(full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
   if(*head == NULL) {
     *head = new_node;
@@ -156,9 +158,15 @@ void insert_contact(Node** head, wchar_t* full_name) {
     current -> next = new_node;
   }
 
+  wprintf(L"\n\n*** CONTACT DATA ***\n\n");
+  wprintf(L"-> Name: %ls;\n", new_node -> full_name);
+  wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
+  wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
+  wprintf(L"\n\n-> Registration successfully Complete!\n\n");
+
 }
 
-Node* create_node(wchar_t* full_name) {
+Node* create_node(wchar_t* full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
   size_t full_name_len = wcslen(full_name) + 1;
   
@@ -171,6 +179,11 @@ Node* create_node(wchar_t* full_name) {
   }
 
   wcscpy(new_node -> full_name, full_name);
+  wcsncpy(new_node->phone_number, phone_number, sizeof(new_node->phone_number) / sizeof(wchar_t) - 1);
+  new_node->phone_number[sizeof(new_node->phone_number) / sizeof(wchar_t) - 1] = L'\0';
+  new_node -> year_of_birth = year_of_birth;
+  new_node -> month_of_birth = month_of_birth;
+  new_node -> day_of_birth = day_of_birth;
   new_node -> next = NULL;
 
   return new_node;
