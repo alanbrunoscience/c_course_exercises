@@ -162,7 +162,7 @@ void insert_contact(Node** head, wchar_t* full_name, wchar_t phone_number[], int
   wprintf(L"-> Name: %ls;\n", new_node -> full_name);
   wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
   wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
-  wprintf(L"\n\n-> Registration successfully Complete!\n\n");
+  wprintf(L"\n\n-> Registration successfully complete!\n\n");
 
 }
 
@@ -190,34 +190,100 @@ Node* create_node(wchar_t* full_name, wchar_t phone_number[], int year_of_birth,
 
 }
 
+Node* merge(Node* list1, Node* list2) {
+
+    if (list1 == NULL)
+      return list2;
+    if (list2 == NULL)
+      return list1;
+
+    Node* merged_list = NULL;
+
+    if ((wcscoll(list1 -> full_name, list2 -> full_name) <= 0)) {
+      merged_list = list1;
+      merged_list -> next = merge(list1 -> next, list2);
+    } else {
+      merged_list = list2;
+      merged_list -> next = merge(list1, list2 -> next);
+    }
+
+    return merged_list;
+}
+
+void split_list(Node* source, Node** front_ref, Node** back_ref) {
+    
+    if (source == NULL || source->next == NULL) {
+      *front_ref = source;
+      *back_ref = NULL;
+      return;
+    }
+
+    Node* slow = source;
+    Node* fast = source->next;
+
+    while (fast != NULL) {
+      fast = fast->next;
+      if (fast != NULL) {
+        slow = slow->next;
+        fast = fast->next;
+      }
+    }
+
+    *front_ref = source;
+    *back_ref = slow->next;
+    slow->next = NULL;
+
+}
+
+void merge_sort(Node** head_ref) {
+
+    Node* head = *head_ref;
+    Node* a;
+    Node* b;
+
+    if (head == NULL || head->next == NULL) {
+        return;
+    }
+
+    split_list(head, &a, &b);
+
+    merge_sort(&a);
+    merge_sort(&b);
+
+    *head_ref = merge(a, b);
+
+}
+
 void print_list(Node* contact_list[]) {
 
-  wprintf(L"\n*** CONTACT LIST ***");
+  wprintf(L"\n\n*** CONTACT LIST ***\n\n");
   for (size_t i = 0; i < 27; i++) {
 
     Node* current = contact_list[i];
     
     if(current != NULL) {
       if(i <= 25) {
-        wprintf(L"\n\n%lc:\n\n", 'A' + i);
+        wprintf(L"%lc:\n", 'A' + i);
       } else {
-        wprintf(L"\n\nNON-STANDARD NAMES:\n\n");
+        wprintf(L"NON-STANDARD NAMES:\n\n");
       }
       while(current != NULL) {
-        wprintf(L"- %ls\n", current -> full_name);
+        wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+        wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+        wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
         current = current -> next;
       }
-      wprintf(L"\n-----------------------------");
+      wprintf(L"\n-----------------------------\n\n");
     }
   }
 }
 
 void free_list(Node* head) {
 
-  Node* current = head;
+  Node *current = head, *next;
 
   while(current != NULL) {
-    Node* next = current -> next;
+    next = current -> next;
     free(current);
     current = next;
   }

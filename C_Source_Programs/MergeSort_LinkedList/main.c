@@ -13,14 +13,10 @@ void splitList(ListNode* source, ListNode** frontRef, ListNode** backRef);
 void mergeSort(ListNode** headRef);
 void push(ListNode** headRef, int newData);
 void printList(ListNode* node);
+void free_memory(ListNode* list);
 
 // Function to merge two sorted linked lists
 ListNode* merge(ListNode* list1, ListNode* list2) {
-
-    printf("list1: ");
-    printList(list1);
-    printf("list2: ");
-    printList(list2);
 
     if (list1 == NULL)
         return list2;
@@ -84,10 +80,6 @@ void mergeSort(ListNode** headRef) {
     mergeSort(&a);
     mergeSort(&b);
 
-    printf("a: %d\n", a->data);
-    printf("b: %d\n", b->data);
-    printf("\n");
-
     // Merge the sorted sublists
     *headRef = merge(a, b);
 
@@ -114,6 +106,17 @@ void printList(ListNode* node) {
 
 }
 
+void free_memory(ListNode* list) {
+
+    ListNode *current = list, *next;
+
+    while (current != NULL) {
+        next = current -> next;
+        free(current);
+        current = next;
+    }
+}
+
 // Main function for testing
 int main() {
     
@@ -133,6 +136,8 @@ int main() {
 
     printf("Sorted list: ");
     printList(head);
+
+    free_memory(head);
 
     return 0;
 

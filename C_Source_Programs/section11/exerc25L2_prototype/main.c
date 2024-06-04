@@ -105,6 +105,14 @@ int main() {
       
       case 2:
 
+        // Step to sort the lists
+        for (size_t i = 0; i < 27; i++) {
+          Node *current = contact_list[i];
+          if(current != NULL && current -> next != NULL) {
+            merge_sort(&contact_list[i]);
+          }
+        }
+
         print_list(contact_list);
             
         break;
