@@ -22,9 +22,9 @@ int main() {
   wchar_t last_name[MAX_NAME_LENGTH];
   wchar_t *full_name = NULL;
   wchar_t phone_number[PHONE_NUMBER_LENGTH];
-  int year_of_birth;
-  int month_of_birth;
-  int day_of_birth;
+  int year_of_birth = 0;
+  int month_of_birth = 0;
+  int day_of_birth = 0;
   size_t total_length;
 
   Node* contact_list[27];
@@ -46,58 +46,38 @@ int main() {
         total_length = 0;
 
         wprintf(L"\n*** CONTACT INFO ***\n\n");
-        wprintf(L"1) First Name: ");
-        wscanf(L" %l[^\n]", first_name);
+        first_and_last_name_input(first_name, last_name, &total_length, &full_name);
+        phone_number_input(phone_number);
 
-        wprintf(L"\n2) Last Name: ");
-        wscanf(L" %l[^\n]", last_name);
+        int is_duplicate = find_duplicate_contact(contact_list, phone_number);
 
-        format_name_variable(first_name, &total_length);
-        format_name_variable(last_name, &total_length);
-        create_full_name_variable(&full_name, total_length, first_name, last_name);
+        if(is_duplicate) {
+          int yes_no = 0;
+          wprintf(L"\n-> Would you want to continue registering this contact (1 - Yes / 2 - No)? ");
+          wscanf(L" %ld", &yes_no);
 
-        wprintf(L"\n3) Phone number (e.g.: (XX) X XXXX-XXXX)). Only digits, please: ");
-        wscanf(L" %l[^\n]", phone_number);
+          while(yes_no < 1 || yes_no > 2) {
+            wprintf(L"\n-> Incorrect answer! Choose an option between 1 (Yes) or 2 (No): ");
+            wscanf(L" %ld", &yes_no);
+          }
 
-        int validation_ret = validate_phone_number(phone_number);
+          if(yes_no == 1) {
+            date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
+            int ret_index = get_index(full_name);
+            insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+          } else {
+            wprintf(L"\n-> Aborting the registration operation...\n\n");
+            free(full_name);
+            break;
+          }
 
-        while(!validation_ret) {
+        } else {
 
-          wprintf(L"\n-> Invalid phone number! Enter only the digits, please (e.g.: (XX) X XXXX-XXXX)): ");
-          wscanf(L" %l[^\n]", phone_number);
+          date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
+          int ret_index = get_index(full_name);
+          insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
-          validation_ret = validate_phone_number(phone_number);
-
-        }
-
-        wprintf(L"\n4) Year of birth: ");
-        wscanf(L" %ld", &year_of_birth);
-
-        while(year_of_birth < 1) {
-          wprintf(L"\n-> Invalid year! The year needs to be greater than 0. Enter the year again: ");
-          wscanf(L" %ld", &year_of_birth);
-        }
-
-        wprintf(L"\n5) Month of birth (1 - Jan, 2 - Feb, ..., 12 - Dec): ");
-        wscanf(L" %ld", &month_of_birth);
-
-        while(month_of_birth < 1 || month_of_birth > 12) {
-          wprintf(L"\n-> Invalid month! The month needs to be greater than 0 and smaller or equal to 12. Enter the month again: ");
-          wscanf(L" %ld", &month_of_birth);
-        }
-
-        wprintf(L"\n6) Day of birth: ");
-        wscanf(L" %ld", &day_of_birth);
-
-        int is_leap_year  = validate_leap_year(year_of_birth);
-
-        while(!validate_day_of_birth(is_leap_year, month_of_birth, day_of_birth)) {
-          wprintf(L"\n-> Invalid day for this month! Enter the day again: ");
-          wscanf(L" %ld", &day_of_birth);
-        }
-        
-        int ret_index = get_index(full_name);
-        insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+        }        
 
         free(full_name);
 

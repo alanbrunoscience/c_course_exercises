@@ -9,19 +9,33 @@
 
 #define MAX_NAME_LENGTH 40
 
-void initialize_lists(Node* contact_list[]) {
+void initialize_lists(Node *contact_list[]) {
   for (size_t i = 0; i < 27; i++) {
     contact_list[i] = NULL;
   }
 }
 
-void format_name_variable(wchar_t name[], size_t* total_length) {
+void first_and_last_name_input(wchar_t *first_name, wchar_t *last_name, size_t *total_length, wchar_t **full_name) {
+
+  wprintf(L"1) First Name: ");
+  wscanf(L" %l[^\n]", first_name);
+
+  wprintf(L"\n2) Last Name: ");
+  wscanf(L" %l[^\n]", last_name);
+
+  format_name_variable(first_name, total_length);
+  format_name_variable(last_name, total_length);
+  create_full_name_variable(full_name, *total_length, first_name, last_name);
+
+}
+
+void format_name_variable(wchar_t name[], size_t *total_length) {
 
   wchar_t str[MAX_NAME_LENGTH];
   wcscpy(str, name);
   const wchar_t delim[] = L" ,.!";
-  wchar_t* saveptr = NULL;
-  wchar_t* token = wcstok(str, delim, &saveptr);
+  wchar_t *saveptr = NULL;
+  wchar_t *token = wcstok(str, delim, &saveptr);
   
   while (token != NULL) {
     *total_length += (wcslen(token) + 1);
@@ -35,6 +49,7 @@ void format_name_variable(wchar_t name[], size_t* total_length) {
   name[0] = L'\0';
 
   while (token != NULL) {
+
     for (size_t i = 0; token[i] != L'\0'; i++) {
       if (i == 0) {
         token[0] = towupper(token[0]);
@@ -46,15 +61,16 @@ void format_name_variable(wchar_t name[], size_t* total_length) {
     wcscat(name, token);
     wcscat(name, L" ");
     token = wcstok(NULL, delim, &saveptr);
+
   }
 
   if (wcslen(name) > 0) {
-    name[wcslen(name) - 1] = L'\0';
+      name[wcslen(name) - 1] = L'\0';
   }
 
 }
 
-void create_full_name_variable(wchar_t** full_name, size_t total_length, wchar_t first_name[], wchar_t last_name[]) {
+void create_full_name_variable(wchar_t **full_name, size_t total_length, wchar_t first_name[], wchar_t last_name[]) {
 
   *full_name = (wchar_t *)malloc(total_length * sizeof(wchar_t));
 
@@ -64,9 +80,28 @@ void create_full_name_variable(wchar_t** full_name, size_t total_length, wchar_t
   }
 
   (*full_name)[0] = L'\0';
+
   wcscpy(*full_name, first_name);
   wcscat(*full_name, L" ");
   wcscat(*full_name, last_name);
+
+}
+
+void phone_number_input(wchar_t *phone_number) {
+
+  wprintf(L"\n3) Phone number (e.g.: (XX) X XXXX-XXXX)). Only digits, please: ");
+  wscanf(L" %l[^\n]", phone_number);
+
+  int validation_ret = validate_phone_number(phone_number);
+
+  while(!validation_ret) {
+
+    wprintf(L"\n-> Invalid phone number! Enter only the digits, please (e.g.: (XX) X XXXX-XXXX)): ");
+    wscanf(L" %l[^\n]", phone_number);
+
+    validation_ret = validate_phone_number(phone_number);
+
+  }
 
 }
 
@@ -86,6 +121,76 @@ int validate_phone_number(wchar_t phone_number[]) {
     return 1;
   } else {
     return 0;
+  }
+
+}
+
+int find_duplicate_contact(Node *contact_list[], wchar_t phone_number[]) {
+
+  int count = 0;
+
+  for (size_t i = 0; i < 27; i++) {
+
+    Node *current = contact_list[i];
+    
+    if(current != NULL) {
+      while(current != NULL) {
+        if(wcscmp(current -> phone_number, phone_number) == 0) {
+          if(count == 0) {
+            wprintf(L"\n-> There is (are) already (a) contact(s) with this phone number:");
+            wprintf(L"\n\n*** CONTACT DATA ***\n\n");
+            wprintf(L"-> Name: %ls;\n", current -> full_name);
+            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+            current = current -> next;
+            count++
+          } else {
+            wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+            current = current -> next;
+          }
+        } else {
+          current = current -> next;
+        }
+      }
+    }
+  }
+
+  if(count != 0) {
+    return 1;
+  } else {
+    return 0;
+  }
+
+}
+
+void date_info_entry_validation(int *year_of_birth, int *month_of_birth, int *day_of_birth) {
+
+  wprintf(L"\n4) Year of birth: ");
+  wscanf(L" %ld", year_of_birth);
+
+  while(*year_of_birth < 1) {
+    wprintf(L"\n-> Invalid year! The year needs to be greater than 0. Enter the year again: ");
+    wscanf(L" %ld", year_of_birth);
+  }
+
+  wprintf(L"\n5) Month of birth (1 - Jan, 2 - Feb, ..., 12 - Dec): ");
+  wscanf(L" %ld", month_of_birth);
+
+  while(*month_of_birth < 1 || *month_of_birth > 12) {
+    wprintf(L"\n-> Invalid month! The month needs to be greater than 0 and smaller or equal to 12. Enter the month again: ");
+    wscanf(L" %ld", month_of_birth);
+  }
+
+  wprintf(L"\n6) Day of birth: ");
+  wscanf(L" %ld", day_of_birth);
+
+  int is_leap_year = validate_leap_year(*year_of_birth);
+
+  while(!validate_day_of_birth(is_leap_year, *month_of_birth, *day_of_birth)) {
+    wprintf(L"\n-> Invalid day for this month! Enter the day again: ");
+    wscanf(L" %ld", day_of_birth);
   }
 
 }
@@ -144,14 +249,14 @@ int get_index(wchar_t full_name[]) {
 
 }
 
-void insert_contact(Node** head, wchar_t* full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
-  Node* new_node = create_node(full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+  Node *new_node = create_node(full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
   if(*head == NULL) {
     *head = new_node;
   } else {
-    Node* current = *head;
+    Node *current = *head;
     while(current -> next != NULL) {
       current = current -> next;
     }
@@ -162,25 +267,25 @@ void insert_contact(Node** head, wchar_t* full_name, wchar_t phone_number[], int
   wprintf(L"-> Name: %ls;\n", new_node -> full_name);
   wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
   wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
-  wprintf(L"\n\n-> Registration successfully complete!\n\n");
+  wprintf(L"\n-> Registration successfully complete!\n\n");
 
 }
 
-Node* create_node(wchar_t* full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+Node *create_node(wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
   size_t full_name_len = wcslen(full_name) + 1;
   
-  Node* new_node = (Node*)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
+  Node *new_node = (Node *)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
 
   if(new_node == NULL) {
     fwprintf(stderr, L"Memory allocation failed\n");
     free(full_name);
-    exit(1);
+    exit(1); 
   }
 
   wcscpy(new_node -> full_name, full_name);
-  wcsncpy(new_node->phone_number, phone_number, sizeof(new_node->phone_number) / sizeof(wchar_t) - 1);
-  new_node->phone_number[sizeof(new_node->phone_number) / sizeof(wchar_t) - 1] = L'\0';
+  wcsncpy(new_node -> phone_number, phone_number, sizeof(new_node->phone_number) / sizeof(wchar_t) - 1);
+  new_node -> phone_number[sizeof(new_node->phone_number) / sizeof(wchar_t) - 1] = L'\0';
   new_node -> year_of_birth = year_of_birth;
   new_node -> month_of_birth = month_of_birth;
   new_node -> day_of_birth = day_of_birth;
@@ -190,14 +295,14 @@ Node* create_node(wchar_t* full_name, wchar_t phone_number[], int year_of_birth,
 
 }
 
-Node* merge(Node* list1, Node* list2) {
+Node *merge(Node *list1, Node *list2) {
 
     if (list1 == NULL)
       return list2;
     if (list2 == NULL)
       return list1;
 
-    Node* merged_list = NULL;
+    Node *merged_list = NULL;
 
     if ((wcscoll(list1 -> full_name, list2 -> full_name) <= 0)) {
       merged_list = list1;
@@ -210,7 +315,7 @@ Node* merge(Node* list1, Node* list2) {
     return merged_list;
 }
 
-void split_list(Node* source, Node** front_ref, Node** back_ref) {
+void split_list(Node *source, Node **front_ref, Node **back_ref) {
     
     if (source == NULL || source->next == NULL) {
       *front_ref = source;
@@ -218,8 +323,8 @@ void split_list(Node* source, Node** front_ref, Node** back_ref) {
       return;
     }
 
-    Node* slow = source;
-    Node* fast = source->next;
+    Node *slow = source;
+    Node *fast = source->next;
 
     while (fast != NULL) {
       fast = fast->next;
@@ -235,11 +340,11 @@ void split_list(Node* source, Node** front_ref, Node** back_ref) {
 
 }
 
-void merge_sort(Node** head_ref) {
+void merge_sort(Node **head_ref) {
 
-    Node* head = *head_ref;
-    Node* a;
-    Node* b;
+    Node *head = *head_ref;
+    Node *a;
+    Node *b;
 
     if (head == NULL || head->next == NULL) {
         return;
@@ -254,12 +359,12 @@ void merge_sort(Node** head_ref) {
 
 }
 
-void print_list(Node* contact_list[]) {
+void print_list(Node *contact_list[]) {
 
   wprintf(L"\n\n*** CONTACT LIST ***\n\n");
   for (size_t i = 0; i < 27; i++) {
 
-    Node* current = contact_list[i];
+    Node *current = contact_list[i];
     
     if(current != NULL) {
       if(i <= 25) {
@@ -278,7 +383,7 @@ void print_list(Node* contact_list[]) {
   }
 }
 
-void free_list(Node* head) {
+void free_list(Node *head) {
 
   Node *current = head, *next;
 
