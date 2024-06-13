@@ -143,7 +143,7 @@ int find_duplicate_contact(Node *contact_list[], wchar_t phone_number[]) {
             wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
             wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
             current = current -> next;
-            count++
+            count++;
           } else {
             wprintf(L"\n-> Name: %ls;\n", current -> full_name);
             wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);

@@ -77,13 +77,9 @@ int main() {
           int ret_index = get_index(full_name);
           insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
-        }        
+        }
 
         free(full_name);
-
-        break;
-      
-      case 2:
 
         // Step to sort the lists
         for (size_t i = 0; i < 27; i++) {
@@ -91,7 +87,11 @@ int main() {
           if(current != NULL && current -> next != NULL) {
             merge_sort(&contact_list[i]);
           }
-        }
+        }  
+
+        break;
+      
+      case 2:
 
         print_list(contact_list);
             
