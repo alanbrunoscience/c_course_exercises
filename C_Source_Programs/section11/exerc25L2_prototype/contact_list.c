@@ -125,46 +125,6 @@ int validate_phone_number(wchar_t phone_number[]) {
 
 }
 
-int find_duplicate_contact(Node *contact_list[], wchar_t phone_number[]) {
-
-  int count = 0;
-
-  for (size_t i = 0; i < 27; i++) {
-
-    Node *current = contact_list[i];
-    
-    if(current != NULL) {
-      while(current != NULL) {
-        if(wcscmp(current -> phone_number, phone_number) == 0) {
-          if(count == 0) {
-            wprintf(L"\n-> There is (are) already (a) contact(s) with this phone number:");
-            wprintf(L"\n\n*** CONTACT DATA ***\n\n");
-            wprintf(L"-> Name: %ls;\n", current -> full_name);
-            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
-            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
-            current = current -> next;
-            count++;
-          } else {
-            wprintf(L"\n-> Name: %ls;\n", current -> full_name);
-            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
-            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
-            current = current -> next;
-          }
-        } else {
-          current = current -> next;
-        }
-      }
-    }
-  }
-
-  if(count != 0) {
-    return 1;
-  } else {
-    return 0;
-  }
-
-}
-
 void date_info_entry_validation(int *year_of_birth, int *month_of_birth, int *day_of_birth) {
 
   wprintf(L"\n4) Year of birth: ");
@@ -249,6 +209,30 @@ int get_index(wchar_t full_name[]) {
 
 }
 
+Node *create_node(wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+
+  size_t full_name_len = wcslen(full_name) + 1;
+  
+  Node *new_node = (Node *)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
+
+  if(new_node == NULL) {
+    fwprintf(stderr, L"Memory allocation failed\n");
+    free(full_name);
+    exit(1); 
+  }
+
+  wcscpy(new_node -> full_name, full_name);
+  wcsncpy(new_node -> phone_number, phone_number, sizeof(new_node->phone_number) / sizeof(wchar_t) - 1);
+  new_node -> phone_number[sizeof(new_node->phone_number) / sizeof(wchar_t) - 1] = L'\0';
+  new_node -> year_of_birth = year_of_birth;
+  new_node -> month_of_birth = month_of_birth;
+  new_node -> day_of_birth = day_of_birth;
+  new_node -> next = NULL;
+
+  return new_node;
+
+}
+
 void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
   Node *new_node = create_node(full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
@@ -271,27 +255,105 @@ void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int
 
 }
 
-Node *create_node(wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+Node *find_duplicate_node(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[]) {
 
-  size_t full_name_len = wcslen(full_name) + 1;
-  
-  Node *new_node = (Node *)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
+  Node *aux = *contact_list;
 
-  if(new_node == NULL) {
-    fwprintf(stderr, L"Memory allocation failed\n");
-    free(full_name);
-    exit(1); 
+  while (aux != NULL) {
+    if (wcscmp(aux -> full_name, full_name) == 0 && wcscmp(aux -> phone_number, phone_number) == 0) {
+      return aux;
+    }
+    aux = aux->next;
   }
 
-  wcscpy(new_node -> full_name, full_name);
-  wcsncpy(new_node -> phone_number, phone_number, sizeof(new_node->phone_number) / sizeof(wchar_t) - 1);
-  new_node -> phone_number[sizeof(new_node->phone_number) / sizeof(wchar_t) - 1] = L'\0';
-  new_node -> year_of_birth = year_of_birth;
-  new_node -> month_of_birth = month_of_birth;
-  new_node -> day_of_birth = day_of_birth;
-  new_node -> next = NULL;
+  return NULL;
 
-  return new_node;
+}
+
+int is_the_contact_already_registered(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+
+  int yes_no = 0;
+  Node *node_found = find_duplicate_node(contact_list, full_name, phone_number);
+
+  if(node_found) {
+
+    wprintf(L"\n\n-> Contact already registered previously:\n");
+    wprintf(L"\n*** CONTACT DATA ***\n\n");
+    wprintf(L"-> Name: %ls;\n", node_found -> full_name);
+    wprintf(L"-> Phone Number: %ls;\n", node_found -> phone_number);
+    wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", node_found -> month_of_birth, node_found -> day_of_birth, node_found -> year_of_birth);
+
+    if(node_found -> year_of_birth != year_of_birth || node_found -> month_of_birth != month_of_birth || node_found -> day_of_birth != day_of_birth) {
+
+      wprintf(L"\n-> Would you want to update this contact's information (1 - Yes / 2 - No)? ");
+      wscanf(L" %d", &yes_no);
+
+      while(yes_no < 1 || yes_no > 2) {
+        wprintf(L"\n-> Incorrect answer! Choose an option between 1 (Yes) or 2 (No): ");
+        wscanf(L" %d", &yes_no);
+      }
+
+      if(yes_no == 1) {
+
+        node_found -> year_of_birth = year_of_birth;
+        node_found -> month_of_birth = month_of_birth;
+        node_found -> day_of_birth = day_of_birth;
+
+        wprintf(L"\n-> Contact updated successfully!\n\n");
+
+      } else {
+        wprintf(L"\n-> Aborting registration operation...\n\n");
+      }
+
+    } else {
+      wprintf(L"\n-> Canceling registration operation...\n\n");
+    }
+
+    return 1;
+
+  }
+
+  return 0;
+
+}
+
+int find_contacts_same_phone_number(Node *contact_list[], wchar_t phone_number[]) {
+
+  int count = 0;
+
+  for (size_t i = 0; i < 27; i++) {
+
+    Node *current = contact_list[i];
+    
+    if(current != NULL) {
+      while(current != NULL) {
+        if(wcscmp(current -> phone_number, phone_number) == 0) {
+          if(count == 0) {
+            wprintf(L"\n\n-> There is (are) already (a) contact(s) with this phone number:\n");
+            wprintf(L"\n\n*** CONTACT DATA ***\n\n");
+            wprintf(L"-> Name: %ls;\n", current -> full_name);
+            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+            current = current -> next;
+            count++;
+          } else {
+            wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+            wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+            wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+            current = current -> next;
+          }
+        } else {
+          current = current -> next;
+        }
+      }
+    }
+  }
+
+  if(count != 0) {
+    return 1;
+  } else {
+    return 0;
+  }
 
 }
 

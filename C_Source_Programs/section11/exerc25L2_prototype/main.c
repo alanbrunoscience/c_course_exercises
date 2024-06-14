@@ -45,38 +45,45 @@ int main() {
 
         total_length = 0;
 
-        wprintf(L"\n*** CONTACT INFO ***\n\n");
+        wprintf(L"\n\n*** CONTACT INFO ***\n\n");
         first_and_last_name_input(first_name, last_name, &total_length, &full_name);
         phone_number_input(phone_number);
+        date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
 
-        int is_duplicate = find_duplicate_contact(contact_list, phone_number);
+        int list_index = get_index(full_name);
 
-        if(is_duplicate) {
-          int yes_no = 0;
-          wprintf(L"\n-> Would you want to continue registering this contact (1 - Yes / 2 - No)? ");
-          wscanf(L" %ld", &yes_no);
+        int contact_registered = is_the_contact_already_registered(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
-          while(yes_no < 1 || yes_no > 2) {
-            wprintf(L"\n-> Incorrect answer! Choose an option between 1 (Yes) or 2 (No): ");
-            wscanf(L" %ld", &yes_no);
-          }
+        if(!contact_registered) {
 
-          if(yes_no == 1) {
-            date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
-            int ret_index = get_index(full_name);
-            insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+          int contact_exists = find_contacts_same_phone_number(contact_list, phone_number);
+
+          if(contact_exists) {
+
+            int yes_no = 0;
+
+            wprintf(L"\n\n-> Would you want to continue registering this contact (1 - Yes / 2 - No)? ");
+            wscanf(L" %d", &yes_no);
+
+            while(yes_no < 1 || yes_no > 2) {
+              wprintf(L"\n-> Incorrect answer! Choose an option between 1 (Yes) or 2 (No): ");
+              wscanf(L" %d", &yes_no);
+            }
+
+            if(yes_no == 1) {
+              insert_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+            } else {
+              wprintf(L"\n-> Aborting the registration operation...\n\n");
+              free(full_name);
+              break;
+            }
+
           } else {
-            wprintf(L"\n-> Aborting the registration operation...\n\n");
-            free(full_name);
-            break;
+
+            insert_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+
           }
-
-        } else {
-
-          date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
-          int ret_index = get_index(full_name);
-          insert_contact(&contact_list[ret_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
-
+          
         }
 
         free(full_name);
