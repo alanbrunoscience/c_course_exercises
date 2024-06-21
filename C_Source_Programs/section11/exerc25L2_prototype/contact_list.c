@@ -75,7 +75,7 @@ void create_full_name_variable(wchar_t **full_name, size_t total_length, wchar_t
   *full_name = (wchar_t *)malloc(total_length * sizeof(wchar_t));
 
   if (*full_name == NULL) {
-    fwprintf(stderr, L"Memory allocation failed\n");
+    fwprintf(stderr, L"\n-> Memory allocation failed\n");
     exit(1);
   }
 
@@ -216,7 +216,7 @@ Node *create_node(wchar_t *full_name, wchar_t phone_number[], int year_of_birth,
   Node *new_node = (Node *)malloc(sizeof(Node) + full_name_len * sizeof(wchar_t));
 
   if(new_node == NULL) {
-    fwprintf(stderr, L"Memory allocation failed\n");
+    fwprintf(stderr, L"\n-> Memory allocation failed\n");
     free(full_name);
     exit(1); 
   }
@@ -255,7 +255,7 @@ void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int
 
 }
 
-Node *find_duplicate_node(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[]) {
+Node *find_already_existing_node(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[]) {
 
   Node *aux = *contact_list;
 
@@ -263,20 +263,20 @@ Node *find_duplicate_node(Node *contact_list[], wchar_t *full_name, wchar_t phon
     if (wcscmp(aux -> full_name, full_name) == 0 && wcscmp(aux -> phone_number, phone_number) == 0) {
       return aux;
     }
-    aux = aux->next;
+    aux = aux -> next;
   }
 
   return NULL;
 
 }
 
-int is_the_contact_already_registered(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
+int update_existing_contact(Node *contact_list[], wchar_t *full_name, wchar_t phone_number[], int year_of_birth, int month_of_birth, int day_of_birth) {
 
   int yes_no = 0;
-  Node *node_found = find_duplicate_node(contact_list, full_name, phone_number);
+  Node *node_found = find_already_existing_node(contact_list, full_name, phone_number);
 
   if(node_found) {
-
+    
     wprintf(L"\n\n-> Contact already registered previously:\n");
     wprintf(L"\n*** CONTACT DATA ***\n\n");
     wprintf(L"-> Name: %ls;\n", node_found -> full_name);
@@ -418,6 +418,80 @@ void merge_sort(Node **head_ref) {
     merge_sort(&b);
 
     *head_ref = merge(a, b);
+
+}
+
+int is_the_list_empty(Node *contact_list[]) {
+
+  for(size_t i = 0; i < 27; i++) {
+    if(contact_list[i] != NULL) {
+      return 1;
+    }
+  }
+
+  return 0;
+
+}
+
+int remove_contact(Node **head, wchar_t *full_name, wchar_t phone_number[]) {
+
+  Node *aux = *head, *node_removed, *previous;
+  int can_i_remove;
+
+  while(aux != NULL) {
+
+    if((wcscmp(aux -> full_name, full_name) == 0) && (wcscmp(aux -> phone_number, phone_number) == 0)) {
+
+      node_removed = aux;
+
+      can_i_remove = removal_confirmation(node_removed);
+
+      if(can_i_remove == 1) {
+
+        if(aux == *head) {
+          *head = node_removed -> next;
+        } else {
+          aux = previous;
+          aux -> next = node_removed -> next;
+        }
+
+        wprintf(L"\n-> Contact removed successfully!\n\n");
+        free(node_removed);
+        
+      } else {
+        wprintf(L"\n-> Aborting delete operation...\n\n");
+      }
+
+      return 1;
+
+    } else {
+      previous = aux;
+      aux = aux -> next;
+    }
+  }
+
+  return 0;
+  
+}
+
+int removal_confirmation(Node *node_removed) {
+
+  int yes_no = 0;
+
+  wprintf(L"\n\n*** CONTACT DATA ***\n\n");
+  wprintf(L"-> Name: %ls;\n", node_removed -> full_name);
+  wprintf(L"-> Phone Number: %ls;\n", node_removed -> phone_number);
+  wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", node_removed -> month_of_birth, node_removed -> day_of_birth, node_removed -> year_of_birth);
+
+  wprintf(L"\n-> Are you sure to remove this contact (1 - Yes / 2 - No)? ");
+  wscanf(L" %d", &yes_no);
+
+  while(yes_no < 1 || yes_no > 2) {
+    wprintf(L"\n-> Incorrect answer! Choose an option between 1 (Yes) or 2 (No): ");
+    wscanf(L" %d", &yes_no);
+  }
+
+  return yes_no;
 
 }
 

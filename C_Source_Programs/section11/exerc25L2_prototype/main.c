@@ -25,6 +25,8 @@ int main() {
   int year_of_birth = 0;
   int month_of_birth = 0;
   int day_of_birth = 0;
+  int list_index;
+  int check_records_list;
   size_t total_length;
 
   Node* contact_list[27];
@@ -35,8 +37,9 @@ int main() {
 
     wprintf(L"*** OPTIONS MENU ***\n\n");
     wprintf(L"1 - Insert contact;\n");
-    wprintf(L"2 - Print contact list;\n");
-    wprintf(L"3 - Finish the program.\n\n-> ");
+    wprintf(L"2 - Remove contact;\n");
+    wprintf(L"3 - Print contact list;\n");
+    wprintf(L"4 - Finish the program.\n\n-> ");
     wscanf(L"%d", &option);
 
     switch (option) {
@@ -50,15 +53,15 @@ int main() {
         phone_number_input(phone_number);
         date_info_entry_validation(&year_of_birth, &month_of_birth, &day_of_birth);
 
-        int list_index = get_index(full_name);
+        list_index = get_index(full_name);
 
-        int contact_registered = is_the_contact_already_registered(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
+        int is_contact_registered = update_existing_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
 
-        if(!contact_registered) {
+        if(!is_contact_registered) {
 
-          int contact_exists = find_contacts_same_phone_number(contact_list, phone_number);
+          int is_there_contact = find_contacts_same_phone_number(contact_list, phone_number);
 
-          if(contact_exists) {
+          if(is_there_contact) {
 
             int yes_no = 0;
 
@@ -77,11 +80,8 @@ int main() {
               free(full_name);
               break;
             }
-
           } else {
-
             insert_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
-
           }
           
         }
@@ -97,16 +97,62 @@ int main() {
         }  
 
         break;
-      
+
       case 2:
 
-        print_list(contact_list);
+        check_records_list = is_the_list_empty(contact_list);
+
+        if(check_records_list) {
+
+          total_length = 0;
+
+          wprintf(L"\n\n*** CONTACT TO BE REMOVED ***\n\n");
+          first_and_last_name_input(first_name, last_name, &total_length, &full_name);
+          phone_number_input(phone_number);
+
+          list_index = get_index(full_name);
+
+          if(contact_list[list_index] == NULL) {
             
+            wprintf(L"\n-> Non-existent contact!\n\n");
+            
+            free(full_name);
+            
+            break;
+
+          } else {
+
+            int node_found = remove_contact(&contact_list[list_index], full_name, phone_number);
+
+            if(!node_found) {
+              wprintf(L"\n-> Non-existent contact!\n\n");  
+            }
+
+            free(full_name);
+
+          }
+
+        } else {
+          wprintf(L"\n-> The list is empty!\n\n");
+        }
+            
+        break;
+      
+      case 3:
+
+        check_records_list = is_the_list_empty(contact_list);
+
+        if(check_records_list) {
+          print_list(contact_list);
+        } else {
+          wprintf(L"\n-> The list is empty!\n\n");
+        }
+
         break;
 
       default:
 
-        if (option != 3) {
+        if (option != 4) {
           wprintf(L"\n-> Invalid option!\n");
         }
 
@@ -114,7 +160,7 @@ int main() {
 
     wprintf(L"\n");
 
-  } while (option != 3);
+  } while (option != 4);
 
   wprintf(L"Finishing the program...\n");
 
