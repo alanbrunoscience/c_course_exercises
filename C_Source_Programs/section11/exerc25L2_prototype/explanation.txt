@@ -1,0 +1,135 @@
+EXERCÍCIO 25 - ListaC11
+
+printf("*** CONTACTS DIRECTORY ***\n\n");
+printf("1 - Insert contact;\n");
+printf("2 - Remove contact;\n");
+printf("3 - Search contact by name;\n");
+printf("4 - List all contacts;\n");
+printf("5 - List contacts by a certain letter;\n");
+printf("6 - Print the birthdays of the month;\n");
+printf("7 - Finish the program.\n\n-> ");
+
+typedef struct Contact {
+
+	struct Node* next;
+    int phone_number[11];
+    int year_of_birth;
+    int month_of_birth;
+    int day_of_birth;
+	wchar full_name[];
+
+} Contact;
+
+======================================================================================================
+
+1 - INSERIR CONTATO:
+
+1) A inserção na lista deverá ser feita, acrescentando-se o elemento mais atual ao final da lista;
+
+2) Portanto, solicitar as seguintes informações:
+
++ Nome (first_name);
+
++ Sobrenome (last_name);
+
++ Número de telefone (phone_number): seguir o padrão brasileiro (XX) 9 XXXX-XXXX;
+
++ Ano de nascimento (year_of_birth): verificar se o ano é bissexto ou não;
+
++ Mês de nascimento (month_of_birth): caso o ano seja bissexto, o mês de fevereiro passará a ter 29 dias;
+
++ Dia de nascimento (day_of_birth): validar se o dia inserido está dentro da quantidade de dias totais de um determinado mês. Caso o ano seja bissexto, e o mês seja fevereiro, será permitida a inserção do dia 29.
+
+2.1) Se a lista que se deseja inserir (representada pela primeira letra de "full_name") estiver vazia, basta chamar a função que insere elementos no final da lista, e mostrar a mensagem ao usuário "Cadastro efetuado com sucesso!";
+
+2.2) Caso a lista já possua contatos inseridos, criar uma função para verificar se o nome e telefone inseridos, já pertencem a algum contato naquela lista. Caso sim, retornar o nó existente e informar ao usuário: "Contato já cadastrado previamente", mostrar as informações do cadastro encontrado, e questionar o usuário se ele deseja atualizar as informações ("Deseja atualizar as informações deste contato?"), caso também ou o ano, ou o mês, ou dia de nascimento sejam diferentes das informações cadastradas no contato prévio;
+
+-> Neste caso, se a resposta do usuário for "SIM", sobrescrever as informações atuais (ano, mês e dia de nascimento) no contato cadastrado anteriormente e exibir a seguinte mensagem: "Cadastro atualizado com sucesso".
+
+-> Agora, se a resposta do usuário for "NÃO", apenas descartar as informações inseridas e retornar ao menu principal;
+
+-> Porventura, caso todas as informações sejam iguais, cancelar a operação de registro e retornar ao menu principal.
+
+2.2.1) Caso a função que busca um nó na lista, que possua o nome e telefone iguais aos inseridos pelo usuário, não retorne nenhuma informação ("0"), pode ser que aquela lista esteja vazia, ou que o número de telefone que se deseja inserir já foi inserido em algum contato com um nome diferente em outras listas. Para o último caso, realizar uma busca em todas as listas (do índice 0 até 26) para verificar se o número informado já existe;
+
+-> Caso o número já tenha sido vinculado a algum contato, ("O número informado já foi cadastrado e vinculado a um contato"), mostrar as informações deste contato, e confirmar com o usuário se ele deseja prosseguir com o cadastro desse novo contato ("Deseja continuar com o cadastro deste contato?");
+
+-> Se a resposta for "SIM", chamar a função que insere elementos na lista, para a inserção deste novo contato em sua respectiva lista (baseada na primeira letra de seu nome), e mostrar a mensagem ao usuário "Cadastro efetuado com sucesso!";
+
+-> Caso "NÃO", descartar as informações inseridas previamente, desalocar a memória para a variável "full_name", e retornar ao menu principal;
+
+-> Se, porventura, o contato a ser inserido ainda não esteja vinculado a nenhum outro contato, basta apenas chamar a função para cadastrá-lo em sua respectiva lista, de acordo com a primeira letra de seu nome.
+
+3) Após realizar o processo de inserção do contato, desalocar memória para a variável "full_name", e realizar o processo de ordenação de toda a lista de contatos, utilizando o algoritmo de ordenação Merge Sort.
+
+======================================================================================================
+
+2 - REMOVER CONTATO:
+
+1) O primeiro passo, antes de remover qualquer elemento da lista é verificar se a lista está vazia, pois se a mesma estiver, não há necessidade de solicitar nenhuma informação ao usuário. Neste caso deve-se informar ao usuário a seguinte informação "A lista está vazia", antes de retornar ao menu principal;
+
+2) Caso a lista não esteja vazia, solicitar ao usuário as seguintes informações:
+
++ Nome (first_name);
+
++ Sobrenome (last_name);
+
++ Número de telefone (phone_number): seguir o padrão brasileiro (XX) 9 XXXX-XXXX;
+
+3) Agora, baseado na primeira letra variável "full_name" (first_name + last_name), verificar se a lista no qual deveria estar inserido este contato não está vazia. Caso esteja, não é necessário remover nenhum elemento, já que a lista está vazia. Portanto, informar ao usuário: "A lista está vazia", desalocar a memória para a variável "full_name", e retornar ao menu principal ("break");
+
+4) Caso a lista não esteja vazia, percorrê-la até que o contato informado seja encontrado. Se for encontrado, mostrar ao usuário as informações do contato, e confirmar se ele deseja remover o elemento ("Deseja remover este contato?"). Caso "SIM", realizar a remoção e mostrar a mensagem "Contato removido com sucesso!" (desalocar a memória para o nó removido). Sobretudo, caso a resposta do usuário seja "NÃO", abortar a operação de remoção, e retornar ao menu;
+
+4) Se o contato informado não for encontrado na lista correspondente, informar ao usuário que o contato não existe na lista, e retornar ao menu principal.
+
+======================================================================================================
+
+3 - PESQUISAR CONTATO PELO NOME
+
+1) Antes de realizar qualquer busca, verificar se a lista completa não está vazia. Caso esteja, informar ao usuário a seguinte informação "A lista está vazia", antes de retornar ao menu principal;
+
+2) Caso a lista completa não esteja vazia, solicitar ao usuário o nome e o sobrenome do contato a ser buscado, e realizar uma nova busca para saber se a lista representada pela primeira letra do nome completo desse contato não está vazia, pois caso esteja, deve-se imprimir a mensagem: "Contato não existente", desalocar a memória para a variável "full_name", e retornar ao menu principal ("break");
+
+3) Sobretudo, caso a lista concernente ao nome daquele contato não esteja vazia, percorrê-la e realizar a impressão de cada referência encontrada, porém de forma ordenada alfabeticamente. Mostrar essas informações ao usuário;
+
+4) Caso não haja a referência a ser buscada na lista, informar ao usuário e retornar ao menu principal.
+
+======================================================================================================
+
+4 - LISTAR TODOS OS CONTATOS
+
+1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal;
+
+2) Caso a lista não esteja vazia, chamar a função que percorre cada um dos índices do array (de A - NON-STANDARD NAMES), e em cada um desses índices, imprimir todos os contatos contidos em cada uma das listas encadeadas. Realizado este processo, basta retornar ao menu principal. 
+
+======================================================================================================
+
+5 - LISTAR CONTATOS POR UMA CERTA LETRA
+
+1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal;
+
+2) Caso a lista não esteja vazia, solicitar ao usuário uma letra. Após a inserção da letra, realizar alguns tratamentos:
+
+-> Caso o usuário insira uma palavra, somente considerar o primeiro caractere;
+
+-> Armazenar, em uma variável, o primeiro caractere, porém transformado em letra maiúscula.
+
+3) Baseado no valor dessa nova variável, obter o índice do vetor (função "get_index");
+
+-> Caso o índice seja 26, ou seja, o índice responsável por imprimir os caracteres fora dos padrões alfabéticos, primeiro verificar se a lista neste índice não está vazia. Caso esteja, informar ao usuário ("Não há contatos a serem impressos!"), e retornar ao menu principal;
+
+-> Sobretudo, caso a lista não esteja vazia, varrê-la, porém comparar cada um dos elementos registrados nesta lista através do primeiro caractere de seus nomes. Caso haja algum contato que inicie por aquele determinado caractere, realizar a impressão. Se não houver nenhum contato, informar ao usuário: "Não há contatos a serem impressos!", e retornar ao menu principal;
+
+-> Já para os caracteres alfabéticos (do índice 0 ao 25), chamar a função que imprime todos os elementos da lista, de acordo com o índice informado, uma vez que a lista não esteja vazia. Caso esteja, informar ao usuário: "Não há contatos a serem impressos!", e retornar ao menu principal.
+
+======================================================================================================
+
+6 - IMPRIMIR OS ANIVERSÁRIO DO MÊS
+
+1) Antes de imprimir os aniversários do mês, realizar uma verificação para saber se a lista está vazia. Se sim, informar ao usuário, e retornar ao menu;
+
+2) Caso a lista não esteja vazia, solicitar ao usuário o mês no qual ele deseja realizar a busca (solicitar um valor de 1 à 12);
+
+3) Percorrer a lista e imprimir, de forma ordenada, os contatos no qual nasceram naquele determinado mês informado pelo usuário (utilizar a estrutura temporária para este processo);
+
+4) Caso não exista nenhum contato que nasceu naquele determinado mês, informar ao usuário e retornar ao menu principal.

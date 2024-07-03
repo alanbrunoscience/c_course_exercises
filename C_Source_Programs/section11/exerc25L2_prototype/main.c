@@ -26,7 +26,8 @@ int main() {
   int month_of_birth = 0;
   int day_of_birth = 0;
   int list_index;
-  int check_records_list;
+  int is_there_contact;
+  int check_elements_existence;
   size_t total_length;
 
   Node* contact_list[27];
@@ -35,11 +36,13 @@ int main() {
 
   do {
 
-    wprintf(L"*** OPTIONS MENU ***\n\n");
+    wprintf(L"\n*** OPTIONS MENU ***\n\n");
     wprintf(L"1 - Insert contact;\n");
     wprintf(L"2 - Remove contact;\n");
-    wprintf(L"3 - Print contact list;\n");
-    wprintf(L"4 - Finish the program.\n\n-> ");
+    wprintf(L"3 - Search contact by name;\n");
+    wprintf(L"4 - Print contact list;\n");
+    wprintf(L"5 - List contacts started with a certain letter;\n");
+    wprintf(L"6 - Finish the program.\n\n-> ");
     wscanf(L"%d", &option);
 
     switch (option) {
@@ -59,7 +62,7 @@ int main() {
 
         if(!is_contact_registered) {
 
-          int is_there_contact = find_contacts_same_phone_number(contact_list, phone_number);
+          is_there_contact = find_contacts_same_phone_number(contact_list, phone_number);
 
           if(is_there_contact) {
 
@@ -76,7 +79,7 @@ int main() {
             if(yes_no == 1) {
               insert_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
             } else {
-              wprintf(L"\n-> Aborting the registration operation...\n\n");
+              wprintf(L"\n-> Aborting the registration operation...\n");
               free(full_name);
               break;
             }
@@ -100,9 +103,9 @@ int main() {
 
       case 2:
 
-        check_records_list = is_the_list_empty(contact_list);
+        check_elements_existence = is_the_list_empty(contact_list);
 
-        if(check_records_list) {
+        if(check_elements_existence) {
 
           total_length = 0;
 
@@ -114,7 +117,7 @@ int main() {
 
           if(contact_list[list_index] == NULL) {
             
-            wprintf(L"\n-> Non-existent contact!\n\n");
+            wprintf(L"\n-> Non-existent contact!\n");
             
             free(full_name);
             
@@ -125,7 +128,7 @@ int main() {
             int node_found = remove_contact(&contact_list[list_index], full_name, phone_number);
 
             if(!node_found) {
-              wprintf(L"\n-> Non-existent contact!\n\n");  
+              wprintf(L"\n-> Non-existent contact!\n");  
             }
 
             free(full_name);
@@ -133,26 +136,65 @@ int main() {
           }
 
         } else {
-          wprintf(L"\n-> The list is empty!\n\n");
+          wprintf(L"\n-> The list is empty!\n");
         }
             
         break;
-      
+
       case 3:
 
-        check_records_list = is_the_list_empty(contact_list);
+        check_elements_existence = is_the_list_empty(contact_list);
 
-        if(check_records_list) {
+        if(check_elements_existence) {
+          
+          total_length = 0;
+
+          wprintf(L"\n\n*** CONTACT TO BE SEARCHED ***\n\n");
+          first_and_last_name_input(first_name, last_name, &total_length, &full_name);
+
+          list_index = get_index(full_name);
+
+          if(contact_list[list_index] == NULL) {
+
+            wprintf(L"\n-> Non-existent contact!\n");
+            
+            free(full_name);
+            
+            break;
+
+          } else {
+
+            is_there_contact = find_contacts_same_names(&contact_list[list_index], full_name);
+
+            if(!is_there_contact) {
+              wprintf(L"\n-> Non-existent contact!\n");
+            }
+
+            free(full_name);
+
+          }
+
+        } else {
+          wprintf(L"\n-> The list is empty!\n");
+        }
+
+        break;
+      
+      case 4:
+
+        check_elements_existence = is_the_list_empty(contact_list);
+
+        if(check_elements_existence) {
           print_list(contact_list);
         } else {
-          wprintf(L"\n-> The list is empty!\n\n");
+          wprintf(L"\n-> The list is empty!\n");
         }
 
         break;
 
       default:
 
-        if (option != 4) {
+        if (option != 6) {
           wprintf(L"\n-> Invalid option!\n");
         }
 
@@ -160,7 +202,7 @@ int main() {
 
     wprintf(L"\n");
 
-  } while (option != 4);
+  } while (option != 6);
 
   wprintf(L"Finishing the program...\n");
 

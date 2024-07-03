@@ -181,9 +181,9 @@ int validate_day_of_birth(int is_leap_year, int month_of_birth, int day_of_birth
 
 }
 
-int get_index(wchar_t full_name[]) {
+int get_index(wchar_t word[]) {
 
-  wchar_t first_letter = full_name[0];
+  wchar_t first_letter = word[0];
 
   if(first_letter == L'Ä' || first_letter == L'Á' || first_letter == L'À' || first_letter == L'Â' || first_letter == L'Ã') {
     return 0;
@@ -251,7 +251,7 @@ void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int
   wprintf(L"-> Name: %ls;\n", new_node -> full_name);
   wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
   wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
-  wprintf(L"\n-> Registration successfully complete!\n\n");
+  wprintf(L"\n-> Registration successfully complete!\n");
 
 }
 
@@ -299,14 +299,14 @@ int update_existing_contact(Node *contact_list[], wchar_t *full_name, wchar_t ph
         node_found -> month_of_birth = month_of_birth;
         node_found -> day_of_birth = day_of_birth;
 
-        wprintf(L"\n-> Contact updated successfully!\n\n");
+        wprintf(L"\n-> Contact updated successfully!\n");
 
       } else {
-        wprintf(L"\n-> Aborting registration operation...\n\n");
+        wprintf(L"\n-> Aborting registration operation...\n");
       }
 
     } else {
-      wprintf(L"\n-> Canceling registration operation...\n\n");
+      wprintf(L"\n-> Canceling registration operation...\n");
     }
 
     return 1;
@@ -349,7 +349,7 @@ int find_contacts_same_phone_number(Node *contact_list[], wchar_t phone_number[]
     }
   }
 
-  if(count != 0) {
+  if(count) {
     return 1;
   } else {
     return 0;
@@ -455,11 +455,11 @@ int remove_contact(Node **head, wchar_t *full_name, wchar_t phone_number[]) {
           aux -> next = node_removed -> next;
         }
 
-        wprintf(L"\n-> Contact removed successfully!\n\n");
+        wprintf(L"\n-> Contact removed successfully!\n");
         free(node_removed);
         
       } else {
-        wprintf(L"\n-> Aborting delete operation...\n\n");
+        wprintf(L"\n-> Aborting delete operation...\n");
       }
 
       return 1;
@@ -468,6 +468,7 @@ int remove_contact(Node **head, wchar_t *full_name, wchar_t phone_number[]) {
       previous = aux;
       aux = aux -> next;
     }
+
   }
 
   return 0;
@@ -495,6 +496,45 @@ int removal_confirmation(Node *node_removed) {
 
 }
 
+int find_contacts_same_names(Node **head, wchar_t *full_name) {
+
+  Node *current = *head;
+
+  int count = 0;
+
+  if(current != NULL) {
+    while(current != NULL) {
+      if(wcscmp(current -> full_name, full_name) == 0) {
+        if(count == 0) {
+          wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
+          wprintf(L"-> Name: %ls;\n", current -> full_name);
+          wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+          wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+          current = current -> next;
+          count++;
+        } else {
+          wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+          wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+          wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+          current = current -> next;
+        }
+      } else {
+        current = current -> next;
+      }
+
+    }
+
+  }
+  
+  if(count) {
+    wprintf(L"\n-----------------------------\n");
+    return 1;
+  } else {
+    return 0;
+  }
+
+}
+
 void print_list(Node *contact_list[]) {
 
   wprintf(L"\n\n*** CONTACT LIST ***\n\n");
@@ -514,7 +554,7 @@ void print_list(Node *contact_list[]) {
         wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
         current = current -> next;
       }
-      wprintf(L"\n-----------------------------\n\n");
+      wprintf(L"\n-----------------------------\n");
     }
   }
 }
