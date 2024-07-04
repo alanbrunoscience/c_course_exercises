@@ -41,7 +41,7 @@ int main() {
     wprintf(L"2 - Remove contact;\n");
     wprintf(L"3 - Search contact by name;\n");
     wprintf(L"4 - Print contact list;\n");
-    wprintf(L"5 - List contacts started with a certain letter;\n");
+    wprintf(L"5 - List contacts started with a certain character;\n");
     wprintf(L"6 - Finish the program.\n\n-> ");
     wscanf(L"%d", &option);
 
@@ -186,6 +186,50 @@ int main() {
 
         if(check_elements_existence) {
           print_list(contact_list);
+        } else {
+          wprintf(L"\n-> The list is empty!\n");
+        }
+
+        break;
+
+      case 5:
+
+        check_elements_existence = is_the_list_empty(contact_list);
+
+        if(check_elements_existence) {
+
+          wchar_t character[2], char_formatted[2];
+          
+          wprintf(L"\n\n*** LIST CONTACTS STARTED WITH A CERTAIN CHARACTER ***\n\n");
+          wprintf(L"-> Enter a character, please: ");
+          wscanf(L" %l[^\n]", character);
+
+          char_formatted[0] = towupper(character[0]);
+          char_formatted[1] = L'\0';
+
+          list_index = get_index(char_formatted);
+
+          if(list_index == 26) {
+            if(contact_list[list_index] != NULL) {
+
+              is_there_contact = print_existing_contacts_nsn_list(&contact_list[list_index], char_formatted);
+
+              if(!is_there_contact) {
+                wprintf(L"\n-> Non-existent contact!\n");
+              }
+              
+            } else {
+              wprintf(L"\n-> Non-existent contact!\n");
+            }
+            
+          } else {
+            if(contact_list[list_index] != NULL) {
+              print_existing_contacts(&contact_list[list_index]);
+            } else {
+              wprintf(L"\n-> Non-existent contact!\n");
+            }
+          }
+
         } else {
           wprintf(L"\n-> The list is empty!\n");
         }

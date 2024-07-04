@@ -330,7 +330,7 @@ int find_contacts_same_phone_number(Node *contact_list[], wchar_t phone_number[]
         if(wcscmp(current -> phone_number, phone_number) == 0) {
           if(count == 0) {
             wprintf(L"\n\n-> There is (are) already (a) contact(s) with this phone number:\n");
-            wprintf(L"\n\n*** CONTACT DATA ***\n\n");
+            wprintf(L"\n\n*** CONTACT(S) DATA ***\n\n");
             wprintf(L"-> Name: %ls;\n", current -> full_name);
             wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
             wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
@@ -537,7 +537,7 @@ int find_contacts_same_names(Node **head, wchar_t *full_name) {
 
 void print_list(Node *contact_list[]) {
 
-  wprintf(L"\n\n*** CONTACT LIST ***\n\n");
+  wprintf(L"\n\n*** CONTACTS LIST ***\n\n");
   for (size_t i = 0; i < 27; i++) {
 
     Node *current = contact_list[i];
@@ -557,6 +557,67 @@ void print_list(Node *contact_list[]) {
       wprintf(L"\n-----------------------------\n");
     }
   }
+}
+
+int print_existing_contacts_nsn_list(Node *contact_list[], wchar_t char_formatted[]) {
+
+  Node *current = *contact_list;
+  int count = 0;
+
+  while(current != NULL) {
+    if(current -> full_name[0] == char_formatted[0]) {
+      if(count == 0) {
+        wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
+        wprintf(L"-> Name: %ls;\n", current -> full_name);
+        wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+        wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+        current = current -> next;
+        count++;
+      } else {
+        wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+        wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+        wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+        current = current -> next;
+      }
+    } else {
+      current = current -> next;
+    }
+
+  }
+
+  if(count) {
+    wprintf(L"\n-----------------------------\n");
+    return 1;
+  } else {
+    return 0;
+  }
+
+}
+
+void print_existing_contacts(Node *contact_list[]) {
+
+  Node *current = *contact_list;
+  int count = 0;
+
+  while(current != NULL) {
+    if(count == 0) {
+      wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
+      wprintf(L"-> Name: %ls;\n", current -> full_name);
+      wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+      wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+      current = current -> next;
+      count++;
+    } else {
+      wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+      wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+      wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+      current = current -> next;
+    }
+
+  }
+
+  wprintf(L"\n-----------------------------\n");
+
 }
 
 void free_list(Node *head) {

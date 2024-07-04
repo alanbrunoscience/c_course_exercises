@@ -104,11 +104,11 @@ typedef struct Contact {
 
 ======================================================================================================
 
-5 - LISTAR CONTATOS POR UMA CERTA LETRA
+5 - LISTAR CONTATOS POR UM CERTO CARACTERE
 
 1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal;
 
-2) Caso a lista não esteja vazia, solicitar ao usuário uma letra. Após a inserção da letra, realizar alguns tratamentos:
+2) Caso a lista não esteja vazia, solicitar ao usuário um caractere. Após a inserção, realizar alguns tratamentos:
 
 -> Caso o usuário insira uma palavra, somente considerar o primeiro caractere;
 
@@ -116,9 +116,9 @@ typedef struct Contact {
 
 3) Baseado no valor dessa nova variável, obter o índice do vetor (função "get_index");
 
--> Caso o índice seja 26, ou seja, o índice responsável por imprimir os caracteres fora dos padrões alfabéticos, primeiro verificar se a lista neste índice não está vazia. Caso esteja, informar ao usuário ("Não há contatos a serem impressos!"), e retornar ao menu principal;
+-> Caso o índice seja 26, ou seja, o índice responsável por imprimir os caracteres fora dos padrões alfabéticos, verificar, primeiramente, se a lista neste índice não está vazia. Caso esteja, informar ao usuário ("Não há contatos a serem impressos!"), e retornar ao menu principal;
 
--> Sobretudo, caso a lista não esteja vazia, varrê-la, porém comparar cada um dos elementos registrados nesta lista através do primeiro caractere de seus nomes. Caso haja algum contato que inicie por aquele determinado caractere, realizar a impressão. Se não houver nenhum contato, informar ao usuário: "Não há contatos a serem impressos!", e retornar ao menu principal;
+-> Sobretudo, caso a lista não esteja vazia, varrê-la, porém comparar cada um dos elementos registrados, através do primeiro caractere de seus nomes. Caso haja algum contato que inicie por aquele determinado caractere, realizar a impressão. Se não houver nenhum contato, informar ao usuário: "Não há contatos a serem impressos!", e retornar ao menu principal;
 
 -> Já para os caracteres alfabéticos (do índice 0 ao 25), chamar a função que imprime todos os elementos da lista, de acordo com o índice informado, uma vez que a lista não esteja vazia. Caso esteja, informar ao usuário: "Não há contatos a serem impressos!", e retornar ao menu principal.
 
