@@ -36,4 +36,6 @@ int find_contacts_same_names(Node **head, wchar_t *full_name);
 void print_list(Node *contact_list[]);
 int print_existing_contacts_nsn_list(Node *contact_list[], wchar_t char_formatted[]);
 void print_existing_contacts(Node *contact_list[]);
+int entry_validation_month_info(int *month_of_birth);
+int find_birthdays(Node **contact_list, int *month_of_birth);
 void free_list(Node *head);

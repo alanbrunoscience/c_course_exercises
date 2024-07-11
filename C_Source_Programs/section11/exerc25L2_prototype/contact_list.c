@@ -620,6 +620,60 @@ void print_existing_contacts(Node *contact_list[]) {
 
 }
 
+int entry_validation_month_info(int *month_of_birth) {
+
+  wprintf(L"-> Enter the month (1 - Jan, 2 - Feb, ..., 12 - Dec): ");
+  wscanf(L" %ld", month_of_birth);
+
+  while(*month_of_birth < 1 || *month_of_birth > 12) {
+    wprintf(L"\n-> Invalid month! The month needs to be greater than 0 and smaller or equal to 12. Enter the month again: ");
+    wscanf(L" %ld", month_of_birth);
+  }
+
+  return *month_of_birth;
+
+}
+
+int find_birthdays(Node **contact_list, int *month_of_birth) {
+
+  const wchar_t *months[] = {L"JANUARY", L"FEBRUARY", L"MARCH", L"APRIL", L"MAY", L"JUNE", L"JULY", L"AUGUST", L"SEPTEMBER", L"OCTOBER", L"NOVEMBER", L"DECEMBER"};
+
+  int count = 0;
+
+  wprintf(L"\n\n*** %ls BIRTHDAYS ***\n", months[*month_of_birth - 1]);
+  for (size_t i = 0; i < 27; i++) {
+
+    Node *current = contact_list[i];
+    
+    if(current != NULL) {
+      if(i <= 25) {
+        wprintf(L"\n%lc:\n", 'A' + i);
+      } else {
+        wprintf(L"\nNON-STANDARD NAMES:\n");
+      }
+      while(current != NULL) {
+        if(current -> month_of_birth == *month_of_birth) {
+          wprintf(L"\n-> Name: %ls;\n", current -> full_name);
+          wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
+          wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+          current = current -> next;
+          count++;
+        } else {
+          current = current -> next;
+        }
+      }
+      wprintf(L"\n-----------------------------\n");
+    }
+  }
+
+  if(count) {
+    return 1;
+  } else {
+    return 0;
+  }
+  
+}
+
 void free_list(Node *head) {
 
   Node *current = head, *next;

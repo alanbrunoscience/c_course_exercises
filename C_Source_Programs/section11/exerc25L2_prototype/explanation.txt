@@ -126,10 +126,36 @@ typedef struct Contact {
 
 6 - IMPRIMIR OS ANIVERSÁRIO DO MÊS
 
-1) Antes de imprimir os aniversários do mês, realizar uma verificação para saber se a lista está vazia. Se sim, informar ao usuário, e retornar ao menu;
+1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal; Ok
 
-2) Caso a lista não esteja vazia, solicitar ao usuário o mês no qual ele deseja realizar a busca (solicitar um valor de 1 à 12);
+2) Caso a lista não esteja vazia, solicitar ao usuário o mês no qual ele deseja realizar a busca (solicitar um valor de 1 à 12). Validar a entrada deste valor; Ok
 
-3) Percorrer a lista e imprimir, de forma ordenada, os contatos no qual nasceram naquele determinado mês informado pelo usuário (utilizar a estrutura temporária para este processo);
+3) Percorrer todas as posições do array que representa cada letra do alfabeto, além dos caracteres fora dos padrões alfabéticos e, em cada um desses índices, verificar se nas listas encadeadas há algum contato que nasceu naquele determinado mês. Caso haja, realizar a impressão dos dados da seguinte forma:
 
-4) Caso não exista nenhum contato que nasceu naquele determinado mês, informar ao usuário e retornar ao menu principal.
+Birthdays of February
+
+A:
+
+-> Name: Alan Bruno;
+-> Phone Number: 11940588014;
+-> Birthday date: 02/25/1997.
+
+-> Name: Aline Silva;
+-> Phone Number: 11945884014;
+-> Birthday date: 02/03/1996.
+
+---------------------------------
+
+B:
+
+-> Name: Bruno Silva;
+-> Phone Number: 11945485614;
+-> Birthday date: 02/17/1984.
+
+-> Name: Burn Jhon;
+-> Phone Number: 11944454014;
+-> Birthday date: 02/05/1995.
+
+---------------------------------
+
+3) Caso não exista nenhum contato que nasceu naquele determinado mês, informar ao usuário e retornar ao menu principal.

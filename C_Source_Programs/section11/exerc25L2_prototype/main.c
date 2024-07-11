@@ -42,7 +42,8 @@ int main() {
     wprintf(L"3 - Search contact by name;\n");
     wprintf(L"4 - Print contact list;\n");
     wprintf(L"5 - List contacts started with a certain character;\n");
-    wprintf(L"6 - Finish the program.\n\n-> ");
+    wprintf(L"6 - Print birthdays of the month;\n");
+    wprintf(L"7 - Finish the program.\n\n-> ");
     wscanf(L"%d", &option);
 
     switch (option) {
@@ -236,9 +237,30 @@ int main() {
 
         break;
 
+      case 6:
+
+        check_elements_existence = is_the_list_empty(contact_list);
+
+        if(check_elements_existence) {
+
+          wprintf(L"\n\n*** PRINT BIRTHDAYS OF THE MONTH ***\n\n");
+          entry_validation_month_info(&month_of_birth);
+
+          int birthdays_found = find_birthdays(contact_list, &month_of_birth);
+
+          if(!birthdays_found) {
+            wprintf(L"\n-> There are no birthdays this month!\n");
+          }
+
+        } else {
+          wprintf(L"\n-> The list is empty!\n");
+        }
+
+        break;
+
       default:
 
-        if (option != 6) {
+        if (option != 7) {
           wprintf(L"\n-> Invalid option!\n");
         }
 
@@ -246,7 +268,7 @@ int main() {
 
     wprintf(L"\n");
 
-  } while (option != 6);
+  } while (option != 7);
 
   wprintf(L"Finishing the program...\n");
 
