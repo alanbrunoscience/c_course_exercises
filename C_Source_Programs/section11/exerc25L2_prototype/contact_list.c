@@ -75,7 +75,7 @@ void create_full_name_variable(wchar_t **full_name, size_t total_length, wchar_t
   *full_name = (wchar_t *)malloc(total_length * sizeof(wchar_t));
 
   if (*full_name == NULL) {
-    fwprintf(stderr, L"\n-> Memory allocation failed\n");
+    fwprintf(stderr, L"\n\n-> Memory allocation failed\n");
     exit(1);
   }
 
@@ -251,7 +251,7 @@ void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int
   wprintf(L"-> Name: %ls;\n", new_node -> full_name);
   wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
   wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
-  wprintf(L"\n-> Registration successfully complete!\n");
+  wprintf(L"\n\n-> Registration successfully complete!\n");
 
 }
 
@@ -299,14 +299,14 @@ int update_existing_contact(Node *contact_list[], wchar_t *full_name, wchar_t ph
         node_found -> month_of_birth = month_of_birth;
         node_found -> day_of_birth = day_of_birth;
 
-        wprintf(L"\n-> Contact updated successfully!\n");
+        wprintf(L"\n\n-> Contact updated successfully!\n");
 
       } else {
-        wprintf(L"\n-> Aborting registration operation...\n");
+        wprintf(L"\n\n-> Aborting registration operation...\n");
       }
 
     } else {
-      wprintf(L"\n-> Canceling registration operation...\n");
+      wprintf(L"\n\n-> Canceling registration operation...\n");
     }
 
     return 1;
@@ -331,7 +331,7 @@ int find_contacts_same_phone_number(Node *contact_list[], wchar_t phone_number[]
           if(count == 0) {
             wprintf(L"\n\n-> There is (are) already (a) contact(s) with this phone number:\n");
             wprintf(L"\n\n*** CONTACT(S) DATA ***\n\n");
-            wprintf(L"-> Name: %ls;\n", current -> full_name);
+            wprintf(L"\n-> Name: %ls;\n", current -> full_name);
             wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
             wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
             current = current -> next;
@@ -455,11 +455,11 @@ int remove_contact(Node **head, wchar_t *full_name, wchar_t phone_number[]) {
           aux -> next = node_removed -> next;
         }
 
-        wprintf(L"\n-> Contact removed successfully!\n");
+        wprintf(L"\n\n-> Contact removed successfully!\n");
         free(node_removed);
         
       } else {
-        wprintf(L"\n-> Aborting delete operation...\n");
+        wprintf(L"\n\n-> Aborting delete operation...\n");
       }
 
       return 1;
@@ -507,7 +507,7 @@ int find_contacts_same_names(Node **head, wchar_t *full_name) {
       if(wcscmp(current -> full_name, full_name) == 0) {
         if(count == 0) {
           wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
-          wprintf(L"-> Name: %ls;\n", current -> full_name);
+          wprintf(L"\n-> Name: %ls;\n", current -> full_name);
           wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
           wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
           current = current -> next;
@@ -527,7 +527,7 @@ int find_contacts_same_names(Node **head, wchar_t *full_name) {
   }
   
   if(count) {
-    wprintf(L"\n-----------------------------\n");
+    wprintf(L"\n\n-----------------------------\n");
     return 1;
   } else {
     return 0;
@@ -544,9 +544,9 @@ void print_list(Node *contact_list[]) {
     
     if(current != NULL) {
       if(i <= 25) {
-        wprintf(L"%lc:\n", 'A' + i);
+        wprintf(L"\n%lc:\n\n", 'A' + i);
       } else {
-        wprintf(L"NON-STANDARD NAMES:\n\n");
+        wprintf(L"\nNON-STANDARD NAMES:\n\n");
       }
       while(current != NULL) {
         wprintf(L"\n-> Name: %ls;\n", current -> full_name);
@@ -554,7 +554,7 @@ void print_list(Node *contact_list[]) {
         wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
         current = current -> next;
       }
-      wprintf(L"\n-----------------------------\n");
+      wprintf(L"\n\n-----------------------------\n");
     }
   }
 }
@@ -568,7 +568,7 @@ int print_existing_contacts_nsn_list(Node *contact_list[], wchar_t char_formatte
     if(current -> full_name[0] == char_formatted[0]) {
       if(count == 0) {
         wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
-        wprintf(L"-> Name: %ls;\n", current -> full_name);
+        wprintf(L"\n-> Name: %ls;\n", current -> full_name);
         wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
         wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
         current = current -> next;
@@ -586,7 +586,7 @@ int print_existing_contacts_nsn_list(Node *contact_list[], wchar_t char_formatte
   }
 
   if(count) {
-    wprintf(L"\n-----------------------------\n");
+    wprintf(L"\n\n-----------------------------\n");
     return 1;
   } else {
     return 0;
@@ -602,7 +602,7 @@ void print_existing_contacts(Node *contact_list[]) {
   while(current != NULL) {
     if(count == 0) {
       wprintf(L"\n\n*** CONTACT(S) DATA FOUND ***\n\n");
-      wprintf(L"-> Name: %ls;\n", current -> full_name);
+      wprintf(L"\n-> Name: %ls;\n", current -> full_name);
       wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
       wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
       current = current -> next;
@@ -616,7 +616,7 @@ void print_existing_contacts(Node *contact_list[]) {
 
   }
 
-  wprintf(L"\n-----------------------------\n");
+  wprintf(L"\n\n-----------------------------\n");
 
 }
 
@@ -636,23 +636,47 @@ int entry_validation_month_info(int *month_of_birth) {
 
 int find_birthdays(Node **contact_list, int *month_of_birth) {
 
-  const wchar_t *months[] = {L"JANUARY", L"FEBRUARY", L"MARCH", L"APRIL", L"MAY", L"JUNE", L"JULY", L"AUGUST", L"SEPTEMBER", L"OCTOBER", L"NOVEMBER", L"DECEMBER"};
-
-  int count = 0;
-
-  wprintf(L"\n\n*** %ls BIRTHDAYS ***\n", months[*month_of_birth - 1]);
   for (size_t i = 0; i < 27; i++) {
 
     Node *current = contact_list[i];
-    
+
     if(current != NULL) {
-      if(i <= 25) {
-        wprintf(L"\n%lc:\n", 'A' + i);
-      } else {
-        wprintf(L"\nNON-STANDARD NAMES:\n");
-      }
       while(current != NULL) {
         if(current -> month_of_birth == *month_of_birth) {
+          return 1;
+        } else {
+          current = current -> next;
+        }
+      }
+    }
+
+  }
+
+  return 0;
+
+}
+
+void print_birthdays(Node **contact_list, int *month_of_birth) {
+
+  const wchar_t *months[] = {L"JANUARY", L"FEBRUARY", L"MARCH", L"APRIL", L"MAY", L"JUNE", L"JULY", L"AUGUST", L"SEPTEMBER", L"OCTOBER", L"NOVEMBER", L"DECEMBER"};
+
+  wprintf(L"\n\n*** %ls BIRTHDAYS ***\n\n", months[*month_of_birth - 1]);
+  for (size_t i = 0; i < 27; i++) {
+
+    Node *current = contact_list[i];
+
+    int count = 0;
+  
+    if(current != NULL) {
+      while(current != NULL) {
+        if(current -> month_of_birth == *month_of_birth) {
+          if(count == 0) {
+            if(i <= 25) {
+              wprintf(L"\n%lc:\n\n", 'A' + i);
+            } else {
+              wprintf(L"\nNON-STANDARD NAMES:\n\n");
+            }
+          }
           wprintf(L"\n-> Name: %ls;\n", current -> full_name);
           wprintf(L"-> Phone Number: %ls;\n", current -> phone_number);
           wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
@@ -660,18 +684,13 @@ int find_birthdays(Node **contact_list, int *month_of_birth) {
           count++;
         } else {
           current = current -> next;
-        }
+        } 
       }
-      wprintf(L"\n-----------------------------\n");
+      if(count != 0) {
+        wprintf(L"\n\n-----------------------------\n");
+      }
     }
-  }
-
-  if(count) {
-    return 1;
-  } else {
-    return 0;
-  }
-  
+  }  
 }
 
 void free_list(Node *head) {

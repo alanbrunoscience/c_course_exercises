@@ -126,9 +126,9 @@ typedef struct Contact {
 
 6 - IMPRIMIR OS ANIVERSÁRIO DO MÊS
 
-1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal;
+1) Antes de listar todos os contatos, verificar se a lista não está vazia. Se estiver, informar ao usuário e retornar ao menu principal; Ok
 
-2) Caso a lista não esteja vazia, solicitar ao usuário o mês no qual ele deseja realizar a busca (solicitar um valor de 1 à 12). Validar a entrada deste valor;
+2) Caso a lista não esteja vazia, solicitar ao usuário o mês no qual ele deseja realizar a busca (solicitar um valor de 1 à 12). Validar a entrada deste valor; Ok
 
 3) Percorrer todas as posições do array que representa cada letra do alfabeto, além dos caracteres fora dos padrões alfabéticos e, em cada um desses índices, verificar se nas listas encadeadas há algum contato que nasceu naquele determinado mês. Caso haja, realizar a impressão dos dados da seguinte forma:
 
