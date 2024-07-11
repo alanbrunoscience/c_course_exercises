@@ -535,7 +535,7 @@ int find_contacts_same_names(Node **head, wchar_t *full_name) {
 
 }
 
-void print_list(Node *contact_list[]) {
+void list_all_contacts(Node *contact_list[]) {
 
   wprintf(L"\n\n*** CONTACTS LIST ***\n\n");
   for (size_t i = 0; i < 27; i++) {

@@ -40,7 +40,7 @@ int main() {
     wprintf(L"1 - Insert contact;\n");
     wprintf(L"2 - Remove contact;\n");
     wprintf(L"3 - Search contact by name;\n");
-    wprintf(L"4 - Print contact list;\n");
+    wprintf(L"4 - List all contacts;\n");
     wprintf(L"5 - List contacts started with a certain character;\n");
     wprintf(L"6 - Print birthdays of the month;\n");
     wprintf(L"7 - Finish the program.\n\n-> ");
@@ -80,7 +80,7 @@ int main() {
             if(yes_no == 1) {
               insert_contact(&contact_list[list_index], full_name, phone_number, year_of_birth, month_of_birth, day_of_birth);
             } else {
-              wprintf(L"\n-> Aborting the registration operation...\n");
+              wprintf(L"\n\n-> Aborting the registration operation...\n");
               free(full_name);
               break;
             }
@@ -186,7 +186,7 @@ int main() {
         check_elements_existence = is_the_list_empty(contact_list);
 
         if(check_elements_existence) {
-          print_list(contact_list);
+          list_all_contacts(contact_list);
         } else {
           wprintf(L"\n\n-> The list is empty!\n");
         }
