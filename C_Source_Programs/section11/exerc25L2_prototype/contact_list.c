@@ -557,6 +557,7 @@ void list_all_contacts(Node *contact_list[]) {
       wprintf(L"\n\n-----------------------------\n");
     }
   }
+
 }
 
 int print_existing_contacts_nsn_list(Node *contact_list[], wchar_t char_formatted[]) {
@@ -691,6 +692,45 @@ void print_birthdays(Node **contact_list, int *month_of_birth) {
       }
     }
   }  
+}
+
+void export_contacts_list_report(Node **contact_list) {
+
+  FILE *fptr;
+
+  if((fptr = fopen("contacts.txt", "w")) == NULL) {
+    wprintf(L"\n\n-> Unable to create the file. Finishing the program...\n");
+    for (int i = 0; i < 27; i++) {
+      free_list(contact_list[i]);
+    }
+    exit(1);
+  }
+
+  fputws(L"*** CONTACTS LIST ***\n\n", fptr);
+  for (size_t i = 0; i < 27; i++) {
+
+    Node *current = contact_list[i];
+    
+    if(current != NULL) {
+      if(i <= 25) {
+        fwprintf(fptr, L"\n%lc:\n\n", 'A' + i);
+      } else {
+        fwprintf(fptr, L"\nNON-STANDARD NAMES:\n\n");
+      }
+      while(current != NULL) {
+        fwprintf(fptr, L"\n-> Name: %ls;\n", current -> full_name);
+        fwprintf(fptr, L"-> Phone Number: %ls;\n", current -> phone_number);
+        fwprintf(fptr, L"-> Birthday date: %ld/%ld/%ld.\n", current -> month_of_birth, current -> day_of_birth, current -> year_of_birth);
+        current = current -> next;
+      }
+      fwprintf(fptr, L"\n\n-----------------------------\n");
+    }
+  }
+
+  fclose(fptr);
+
+  wprintf(L"\n\n-> Report generated successfully!\n");
+
 }
 
 void free_list(Node *head) {
