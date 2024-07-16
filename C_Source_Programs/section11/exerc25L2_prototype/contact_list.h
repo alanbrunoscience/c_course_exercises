@@ -40,4 +40,5 @@ int entry_validation_month_info(int *month_of_birth);
 int find_birthdays(Node **contact_list, int *month_of_birth);
 void print_birthdays(Node **contact_list, int *month_of_birth);
 void export_contacts_list_report(Node **contact_list);
+// void print_characters_from_the_report(Node **contact_list);
 void free_list(Node *head);

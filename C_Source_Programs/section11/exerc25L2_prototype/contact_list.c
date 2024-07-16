@@ -698,7 +698,7 @@ void export_contacts_list_report(Node **contact_list) {
 
   FILE *fptr;
 
-  if((fptr = fopen("contacts.txt", "w")) == NULL) {
+  if((fptr = fopen("contacts.bin", "w")) == NULL) {
     wprintf(L"\n\n-> Unable to create the file. Finishing the program...\n");
     for (int i = 0; i < 27; i++) {
       free_list(contact_list[i]);
@@ -729,9 +729,36 @@ void export_contacts_list_report(Node **contact_list) {
 
   fclose(fptr);
 
-  wprintf(L"\n\n-> Report generated successfully!\n");
+  wprintf(L"-> Data saved successfully!\n\n");
 
 }
+
+// void print_characters_from_the_report(Node **contact_list) {
+
+//   FILE *fptr;
+//   wchar_t ch;
+
+//   if((fptr = fopen("contacts.txt", "r")) == NULL) {
+//     wprintf(L"\n\n-> Unable to read this file. Finishing the program...\n");
+//     for(int i = 0; i < 27; i++) {
+//       free_list(contact_list[i]);
+//     }
+//     exit(1);
+//   }
+
+//   while((ch = fgetwc(fptr)) != EOF) {
+//     // if(ch == 13) {
+//     //   wprintf(L"\n");
+//     // } else {
+//       wprintf(L"%ld ", ch);
+//     // }
+//   }
+
+//   fclose(fptr);
+
+//   wprintf(L"\n\n-> Report read successfully!\n");
+
+// }
 
 void free_list(Node *head) {
 

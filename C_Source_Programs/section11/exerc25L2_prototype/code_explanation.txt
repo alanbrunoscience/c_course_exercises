@@ -159,3 +159,62 @@ B:
 ---------------------------------
 
 3) Caso não exista nenhum contato que nasceu naquele determinado mês, informar ao usuário e retornar ao menu principal.
+
+======================================================================================================
+
+7 - GERAÇÃO DE RELATÓRIO
+
+1) Sempre que o programa for encerrado, os contatos devem ser armazenados em um arquivo binário. Quando o programa iniciar, os contatos devem ser inicializados com os dados contidos neste arquivo binário. Sendo assim, este relatório conterá as informações de todos os contatos, e será gerado somente se as listas não estiverem vazias. O nome do relatório será "contacts.bin";
+
+2) Uma vez que o programa for inicializado, caso, no diretório do programa, haja o relatório "contacts.bin", e neste haja alguma informação de contato, as informações de todos os contatos devem ser inseridas nas listas, em suas respectivas posições (Full Name, Phone Number, Birthday date). Sendo assim, novas interações na lista devem ser feitas, porém levando-se em consideração as informações já previamente inseridas, oriundas deste relatório;
+
+3) O Padrão do relatório deve seguir a seguinte formatação:
+
+
+*** CONTACTS LIST ***
+
+
+A:
+
+
+-> Name: Alan Bruno;
+-> Phone Number: 11940588014;
+-> Birthday date: 5/2/1997.
+
+-> Name: Aline Maria;
+-> Phone Number: 11956234679;
+-> Birthday date: 6/2/1995.
+
+
+-----------------------------
+
+B:
+
+
+-> Name: Bruno Carlos;
+-> Phone Number: 11940563252;
+-> Birthday date: 2/25/1954.
+
+
+-----------------------------
+
+4) A importação desse relatório deve ser realizada antes do do... while, e caso não haja nenhuma informação a ser importada, deve-se exibir a mensagem: "Não existem informações para serem importadas". Caso hajam, após a importação, informar: "Dados importados com sucesso". Antes da chamada dessa função, informar ao usuário: "Analisando dados para serem importados...";
+
+5) O processo de importação deve ocorrer da seguinte maneira: deve ser feito uma varredura até o final do arquivo, e onde conter:
+
+-> Name: 
+-> Phone Number: 
+-> Birthday date: 
+
+- Armazenar as informações contidas em cada uma dessas chaves nas variáveis "full_name (Name)", "phone_number (Phone Number)", e "year_of_birth", "month_of_birth", e "day_of_birth" (Birthday date - month_of_birth/day_of_birth/year_of_birth);
+
+- Logo após esse armazenamento, realizar o processo de criação e inserção do nó na lista, no índice correto, baseando-se na primeira letra da variável full_name;
+
+- Continuar varrendo o arquivo até o seu final, e onde se encontrar novamente as informações acima, atualizar o valor das variáveis citadas anteriormente, criando e inserindo esse novo nó na posição correta do array;
+
+- Em resumo o fluxo é:
+
+-> 1. Percorrer o arquivo do início ao final;
+-> 2. Cada vez que se deparar com as informações de "Name", "Phone Number" e "Birthday date", armazenar essas informações em um nó;
+-> 3. Inserir esse nó na lista, em sua respectiva posição (index);
+-> 4. Continuar esse fluxo até que todo arquivo seja lido.
