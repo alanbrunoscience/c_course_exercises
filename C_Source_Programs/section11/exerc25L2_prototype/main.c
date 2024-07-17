@@ -34,6 +34,10 @@ int main() {
 
   initialize_lists(contact_list);
 
+  wprintf(L"Analyzing data to be imported...\n");
+
+  import_data_contacts(&contact_list, &full_name, &year_of_birth, &month_of_birth, &day_of_birth);
+
   do {
 
     wprintf(L"\n*** OPTIONS MENU ***\n\n");
@@ -119,7 +123,7 @@ int main() {
 
           if(contact_list[list_index] == NULL) {
             
-            wprintf(L"\n\n-> Non-existent contact!\n");
+            wprintf(L"\n\n-> Non-existent contact!");
             
             free(full_name);
             
@@ -130,7 +134,7 @@ int main() {
             int node_found = remove_contact(&contact_list[list_index], full_name, phone_number);
 
             if(!node_found) {
-              wprintf(L"\n\n-> Non-existent contact!\n");  
+              wprintf(L"\n\n-> Non-existent contact!");
             }
 
             free(full_name);
@@ -138,7 +142,7 @@ int main() {
           }
 
         } else {
-          wprintf(L"\n\n-> The list is empty!\n");
+          wprintf(L"\n\n-> The list is empty!");
         }
             
         break;
@@ -158,7 +162,7 @@ int main() {
 
           if(contact_list[list_index] == NULL) {
 
-            wprintf(L"\n\n-> Non-existent contact!\n");
+            wprintf(L"\n\n-> Non-existent contact!");
             
             free(full_name);
             
@@ -169,7 +173,7 @@ int main() {
             is_there_contact = find_contacts_same_names(&contact_list[list_index], full_name);
 
             if(!is_there_contact) {
-              wprintf(L"\n\n-> Non-existent contact!\n");
+              wprintf(L"\n\n-> Non-existent contact!");
             }
 
             free(full_name);
@@ -177,7 +181,7 @@ int main() {
           }
 
         } else {
-          wprintf(L"\n\n-> The list is empty!\n");
+          wprintf(L"\n\n-> The list is empty!");
         }
 
         break;
@@ -189,7 +193,7 @@ int main() {
         if(check_elements_existence) {
           list_all_contacts(contact_list);
         } else {
-          wprintf(L"\n\n-> The list is empty!\n");
+          wprintf(L"\n\n-> The list is empty!");
         }
 
         break;
@@ -217,23 +221,23 @@ int main() {
               is_there_contact = print_existing_contacts_nsn_list(&contact_list[list_index], char_formatted);
 
               if(!is_there_contact) {
-                wprintf(L"\n\n-> Non-existent contact!\n");
+                wprintf(L"\n\n-> Non-existent contact!");
               }
               
             } else {
-              wprintf(L"\n\n-> Non-existent contact!\n");
+              wprintf(L"\n\n-> Non-existent contact!");
             }
             
           } else {
             if(contact_list[list_index] != NULL) {
               print_existing_contacts(&contact_list[list_index]);
             } else {
-              wprintf(L"\n\n-> Non-existent contact!\n");
+              wprintf(L"\n\n-> Non-existent contact!");
             }
           }
 
         } else {
-          wprintf(L"\n\n-> The list is empty!\n");
+          wprintf(L"\n\n-> The list is empty!");
         }
 
         break;
@@ -256,7 +260,7 @@ int main() {
           }
 
         } else {
-          wprintf(L"\n-> The list is empty!\n");
+          wprintf(L"\n\n-> The list is empty!");
         }
 
         break;
@@ -276,7 +280,7 @@ int main() {
       default:
 
         if (option != 7) {
-          wprintf(L"\n\n-> Invalid option!\n");
+          wprintf(L"\n\n-> Invalid option!");
         }
 
     }
@@ -291,7 +295,7 @@ int main() {
     export_contacts_list_report(contact_list);
   }
 
-  wprintf(L"\nFinishing the program...\n");
+  wprintf(L"Finishing the program...\n");
 
   for (int i = 0; i < 27; i++) {
     free_list(contact_list[i]);

@@ -15,6 +15,12 @@ void initialize_lists(Node *contact_list[]) {
   }
 }
 
+void import_data_contacts(Node *contact_list[], wchar_t *full_name, int *year_of_birth, int *month_of_birth, int *day_of_birth) {
+
+  
+
+}
+
 void first_and_last_name_input(wchar_t *first_name, wchar_t *last_name, size_t *total_length, wchar_t **full_name) {
 
   wprintf(L"1) First Name: ");
@@ -251,7 +257,7 @@ void insert_contact(Node **head, wchar_t *full_name, wchar_t phone_number[], int
   wprintf(L"-> Name: %ls;\n", new_node -> full_name);
   wprintf(L"-> Phone Number: %ls;\n", new_node -> phone_number);
   wprintf(L"-> Birthday date: %ld/%ld/%ld.\n", new_node -> month_of_birth, new_node -> day_of_birth, new_node -> year_of_birth);
-  wprintf(L"\n\n-> Registration successfully complete!\n");
+  wprintf(L"\n\n-> Registration successfully complete!");
 
 }
 
@@ -455,11 +461,11 @@ int remove_contact(Node **head, wchar_t *full_name, wchar_t phone_number[]) {
           aux -> next = node_removed -> next;
         }
 
-        wprintf(L"\n\n-> Contact removed successfully!\n");
+        wprintf(L"\n\n-> Contact removed successfully!");
         free(node_removed);
         
       } else {
-        wprintf(L"\n\n-> Aborting delete operation...\n");
+        wprintf(L"\n\n-> Aborting delete operation...");
       }
 
       return 1;
@@ -729,7 +735,7 @@ void export_contacts_list_report(Node **contact_list) {
 
   fclose(fptr);
 
-  wprintf(L"-> Data saved successfully!\n\n");
+  wprintf(L"-> Data saved successfully!\n\n\n");
 
 }
 

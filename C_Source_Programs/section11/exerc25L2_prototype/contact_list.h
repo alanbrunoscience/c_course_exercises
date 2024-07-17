@@ -12,6 +12,7 @@ typedef struct Node {
 
 // Functions prototype
 void initialize_lists(Node *contact_list[]);
+void import_data_contacts(Node *contact_list[], wchar_t *full_name, int *year_of_birth, int *month_of_birth, int *day_of_birth);
 void first_and_last_name_input(wchar_t *first_name, wchar_t *last_name, size_t *total_length, wchar_t **full_name);
 void format_name_variable(wchar_t name[], size_t *total_length);
 void create_full_name_variable(wchar_t **full_name, size_t total_length, wchar_t first_name[], wchar_t last_name[]);
