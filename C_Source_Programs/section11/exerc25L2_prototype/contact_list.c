@@ -15,9 +15,25 @@ void initialize_lists(Node *contact_list[]) {
   }
 }
 
-void import_data_contacts(Node *contact_list[], wchar_t *full_name, int *year_of_birth, int *month_of_birth, int *day_of_birth) {
+int import_data_contacts(Node *contact_list[], wchar_t *full_name, int *year_of_birth, int *month_of_birth, int *day_of_birth) {
 
-  
+  FILE *fptr;
+  wchar_t str[256]; // Fixed-size buffer
+
+  if((fptr = fopen("contacts.bin", "rb")) == NULL) {
+    wprintf(L"\n\n-> This file could not be opened for reading. Please ensure this report exists and is in a readable format.\n");
+    return 1;
+  }
+
+  while (fgetws(str, sizeof(str) / sizeof(wchar_t), fptr) != NULL) {
+    wprintf(L"%ls", str);
+  }
+
+  fclose(fptr);
+
+  wprintf(L"\n\n-> Data imported successfully!\n");
+
+  return 0;
 
 }
 
